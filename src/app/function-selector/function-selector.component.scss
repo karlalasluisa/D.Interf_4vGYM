@@ -1,0 +1,24 @@
+.function-selector {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #555;
+    cursor: pointer;
+}
+
+button.active {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+button i {
+    margin-right: 5px;
+}

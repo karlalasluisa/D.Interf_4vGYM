@@ -1,1 +1,6 @@
-<p>function-selector works!</p>
+    <button [class.active]="currentView === 'activities'" (click)="selectView('activities')">
+        <i class="fa fa-calendar"></i> ACTIVITIES
+    </button>
+    <button [class.active]="currentView === 'trainers'" (click)="selectView('trainers')">
+        <i class="fa fa-user"></i> TRAINERS
+    </button>
