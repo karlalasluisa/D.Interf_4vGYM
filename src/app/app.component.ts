@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FunctionSelectorComponent } from './function-selector/function-selector.component';
-import { CalendarComponent } from './function-selector/activities/calendar/calendar.component';
+import { ActivitiesComponent } from './function-selector/activities/activities.component';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, FunctionSelectorComponent,CalendarComponent], //calendario en prueba y mantenimiento aún. el sitio es temporal
+  imports: [NavbarComponent, FunctionSelectorComponent, ActivitiesComponent], 
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
