@@ -18,9 +18,10 @@
 
   img {
     @include elemntoActividad();
+    width: 16vh;
   }
 
-  .col-1 {
+  .col-2 {
     position: relative;
   }
 
@@ -29,7 +30,7 @@
 @mixin btnBordeDerecho(){
   margin: 20%;
   position: absolute;
-  right: 0;  /* Posiciona al borde derecho */
+  
   
 }
 .btnTrash {
