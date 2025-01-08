@@ -1,0 +1,50 @@
+@mixin elemntoActividad(){
+  margin: 1vh;
+  height: 18vh;
+}
+
+#contenedorActividad {
+  background-color: rgb(226, 226, 226);
+  width: 70vh;
+  height: 20vh;
+
+  .scrollable-div {
+    @include elemntoActividad();
+    max-height: 100%; // Ajusta la altura al 100% del contenedor padre
+    width: 40vh;
+    overflow-y: auto; // Activa el scroll vertical para contenido adicional
+    overflow-x: hidden; // Evita el scroll horizontal    
+  }
+
+  img {
+    @include elemntoActividad();
+  }
+
+  .col-1 {
+    position: relative;
+  }
+
+  
+}
+@mixin btnBordeDerecho(){
+  margin: 20%;
+  position: absolute;
+  right: 0;  /* Posiciona al borde derecho */
+  
+}
+.btnTrash {
+  @include btnBordeDerecho();
+  top: 0;    /* Posiciona al borde superior */
+}
+
+
+.btnEdit{
+  @include btnBordeDerecho();
+  bottom: 0;    /* Posiciona al borde superior */
+}
+
+.btnCreateActivity{
+  position: absolute;
+  right: 20px;
+  top: 20px
+}
