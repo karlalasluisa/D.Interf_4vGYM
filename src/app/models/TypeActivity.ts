@@ -1,4 +1,4 @@
-export class Actividad {
+export class TypeActivity {
     id: number;
     name: string;
     numOfMonitors: number;
