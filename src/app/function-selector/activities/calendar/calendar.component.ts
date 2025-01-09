@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, model} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, model, Output} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -13,6 +13,32 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
-export class CalendarComponent {
-  selected = model<Date | null>(null);
+
+/*Lo voy a explicar por que lo he buscado en foros y convinado con lo que sabía hacer:
+[(selected)]="selected" hace que la fecha seleccionada se actualice en la variable
+(selectedChange)="onDateSelected(selected)" envia la fecha seleccionada al padre
+
+@Output() dateChange = new EventEmitter<Date>(); 
+Es un emisor de eventos (EventEmitter) que notifica al componente padre cada vez que cambia la fecha seleccionada.
+El componente padre puede suscribirse a este evento.
+
+onDateSelected(newDate: Date): void {
+    this.dateChange.emit(newDate);
+    console.log(newDate);
+  }
+emite la fecha para que el padre la reciba
+*/
+export class CalendarComponent { 
+  @Output() dateChange = new EventEmitter<Date>();
+  selected: Date = new Date(); // Fecha inicial (hoy)
+
+  ngOnInit(): void {
+    this. selected = new Date();
+    this.onDateSelected(this.selected);
+  }
+
+  onDateSelected(newDate: Date): void {
+    this.dateChange.emit(newDate);
+    console.log(newDate);
+  }
 }

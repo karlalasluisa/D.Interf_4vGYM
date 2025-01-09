@@ -7,6 +7,7 @@
   background-color: rgb(226, 226, 226);
   width: 70vh;
   height: 20vh;
+  position: relative;
 
   .scrollable-div {
     @include elemntoActividad();
@@ -20,12 +21,6 @@
     @include elemntoActividad();
     width: 16vh;
   }
-
-  .col-2 {
-    position: relative;
-  }
-
-  
 }
 @mixin btnBordeDerecho(){
   margin: 20%;

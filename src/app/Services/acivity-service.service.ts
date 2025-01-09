@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Activity } from '../models/Activity';
+import { map } from 'rxjs/internal/operators/map';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +14,29 @@ export class AcivityServiceService {
 
   getActivities() :Observable<Activity[]>
   {
-    return this.http.get<Activity[]>('http://localhost:8080/activities'); 
+    var a = this.http.get<Activity[]>('http://localhost:8000/activities'); 
+    a.forEach(data => console.log(data.map(activity => new Date(activity.startDate).getDate())));
+    return a;
   }
 
   getActivitiesByDate(date: Date) {
-    var activities = this.getActivities().subscribe(data => {
-      data.forEach(activity => {
-        if (activity.date == date) {
-          return activity;
-        }
-      });
-    })
-    return activities; 
+    console.log(date.getDate());
+    return this.getActivities().pipe(
+      map((data) =>
+        data.filter((activity) => new Date(activity.startDate).getDate() === date.getDate(),
+    ))
+    );
   }
 
   updateActivity(activity: Activity) { 
-    return this.http.put<Activity>('http://localhost:8080/activities/' + activity.id, activity).subscribe();
+    return this.http.put<Activity>('http://localhost:8000/activities/' + activity.id, activity).subscribe();
   }
 
   deleteActivity(id: number) {
-    return this.http.delete<Activity>('http://localhost:8080/activities/' + id).subscribe();
+    return this.http.delete<Activity>('http://localhost:8000/activities/' + id).subscribe();
   }
 
   addActivity(activity: Activity) {
-    return this.http.post<Activity>('http://localhost:8080/activities', activity).subscribe();
+    return this.http.post<Activity>('http://localhost:8000/activities', activity).subscribe();
   }
 }

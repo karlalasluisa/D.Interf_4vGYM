@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { Monitor } from './../../../../models/Monitor';
 @Component({
   selector: 'app-monitor-simple',
   imports: [],
@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './monitor-simple.component.scss'
 })
 export class MonitorSimpleComponent {
+  @Input() monitor!: Monitor;
+
+  constructor() {}
 
 }

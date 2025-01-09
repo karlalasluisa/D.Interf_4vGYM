@@ -3,16 +3,17 @@ import { TypeActivity } from "./TypeActivity";
 
 export class Activity {
     id: number;
-    date: Date;
-    place: string;
-    monitor: Monitor;
     type: TypeActivity;
+    monitors: Monitor[];
+    startDate: Date;
+    endDate: Date;
+    
 
-    public constructor(id: number, date: Date, place: string, monitor: Monitor, type: TypeActivity) {
+    public constructor(id: number, Sdate: Date, Edate: Date, monitors: Monitor[], type: TypeActivity) {
         this.id = id;
-        this.date = date;
-        this.place = place;
-        this.monitor = monitor;
+        this.startDate = Sdate;
+        this.endDate = Edate;
+        this.monitors = monitors;
         this.type = type;
     }
 }

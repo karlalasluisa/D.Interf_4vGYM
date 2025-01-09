@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
+
 
 @Component({
   selector: 'app-monitors',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './monitors.component.scss'
 })
 export class MonitorsComponent {
-
+  
 }
