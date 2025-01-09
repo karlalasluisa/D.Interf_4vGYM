@@ -1,6 +1,7 @@
 import { Monitor } from "./Monitor";
 import { TypeActivity } from "./TypeActivity";
-export class Actividad {
+
+export class Activity {
     id: number;
     date: Date;
     place: string;
