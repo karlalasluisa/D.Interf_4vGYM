@@ -5,15 +5,12 @@ import { FunctionSelectorComponent } from './function-selector/function-selector
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, FunctionSelectorComponent],
+  imports: [NavbarComponent, RouterOutlet],
   templateUrl: './app.component.html',
+  standalone: true,
   styleUrl: './app.component.scss'
+  
 })
 export class AppComponent {
   title = '4vGYMAppDI';
-  currentView: string = 'activities'; // Vista inicial
-
-  updateView(view: string): void {
-    this.currentView = view;
-  }
 }
