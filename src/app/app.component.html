@@ -1,23 +1,2 @@
 <app-navbar/>
-
-<nav class="nav border-bottom" >
-  <a class="nav-link d-flex align-items-center" routerLink="/goto-activities" routerLinkActive="active">
-    <span class="icon me-2">
-      <i class="bi bi-calendar-event" style="font-size: 20px;"></i>
-    </span>
-    <span>ACTIVIDADES</span>
-  </a>
-  <a class="nav-link d-flex align-items-center" routerLink="/goto-monitors" routerLinkActive="active">
-    <span class="icon me-2">
-      <i class="bi bi-person" style="font-size: 20px;"></i>
-    </span>
-    <span>MONITORES</span>
-  </a>
-
-</nav>
-
-
-
-
-<!-- The routed views render in the <router-outlet>-->
-  <router-outlet></router-outlet>
+  <app-function-selector (viewChanged)="updateView($event)"></app-function-selector>
