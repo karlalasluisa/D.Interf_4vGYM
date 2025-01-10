@@ -13,7 +13,7 @@ export class ActivitiesComponent {
 
   constructor() { }
 
-
+  
 
   onDateChange(newDate: Date): void {
     this.selected = newDate; // Actualiza la fecha seleccionada = newDate;

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Activity } from '../../../models/Activity';
 import { AcivityServiceService } from '../../../Services/acivity-service.service';
@@ -11,6 +11,7 @@ import { ActivityComponent } from './activity/activity.component'
   styleUrl: './table-activities.component.scss'
 })
 export class TableActivitiesComponent implements OnChanges{
+  @Output() dateChange = new EventEmitter<Date>();
   @Input() date: Date = new Date();
   activitiesSubs: Subscription= new Subscription;
   activities : Activity[]=[];
@@ -63,4 +64,15 @@ export class TableActivitiesComponent implements OnChanges{
       }
     });
   }
+
+  nextDay(){
+    this.date.setDate(this.date.getDate() + 1);
+    this.dateChange.emit(this.date);
+  }
+
+  previousDay(){
+    this.date.setDate(this.date.getDate() - 1);
+    this.dateChange.emit(this.date);
+  }
+
 }

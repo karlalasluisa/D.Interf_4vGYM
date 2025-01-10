@@ -52,8 +52,6 @@
 @mixin btnBordeDerecho(){
   margin: 20%;
   position: absolute;
-  
-  
 }
 .btnTrash {
   @include btnBordeDerecho();
@@ -70,4 +68,8 @@
   position: absolute;
   right: 0;
   top: 20px
+}
+
+.backColorActivity{
+  background-color: rgb(226, 226, 226);
 }
