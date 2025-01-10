@@ -12,3 +12,4 @@ export class Monitor {
         this.photo = photo;
     }
 }
+    

@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <!-- Barra de búsqueda -->
+    <div class="input-group ">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar">
+    </div>
+
+    <!-- Carrusel -->
+    <div class="d-flex justify-content-between align-items-center">
+        <a (click)="previous()" class="custom-carousel-icon">
+            <i class="bi bi-chevron-double-left"></i>
+        </a>
+    
+        <div class="carousel d-flex overflow-hidden" style="width: 70%; height: 200px;">
+            <app-monitor
+                *ngFor="let monitor of filteredMonitors.slice(currentIndex, currentIndex + itemsPerPage)"></app-monitor>
+        </div>
+    
+        <a (click)="next()" class="custom-carousel-icon">
+            <i class="bi bi-chevron-double-right"></i>
+        </a>
+    </div>
+
+</div>

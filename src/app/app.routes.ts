@@ -5,4 +5,7 @@ import { MonitorsComponent } from './function-selector/monitors/monitors.compone
 export const routes: Routes = [
     { path: 'information-activities', component: ActivitiesComponent },
     { path: 'information-monitors', component: MonitorsComponent },
+    { path: '**', redirectTo: '/information-activities' }, // Ruta no encontrada
+    { path: '', redirectTo: '/information-activities', pathMatch: 'full' },// Ruta por defecto
+
 ];
