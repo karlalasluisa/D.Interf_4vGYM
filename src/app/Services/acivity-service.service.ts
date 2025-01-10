@@ -15,16 +15,14 @@ export class AcivityServiceService {
   getActivities() :Observable<Activity[]>
   {
     var a = this.http.get<Activity[]>('http://localhost:8000/activities'); 
-    a.forEach(data => console.log(data.map(activity => new Date(activity.startDate).getDate())));
     return a;
   }
 
   getActivitiesByDate(date: Date) {
-    console.log(date.getDate());
     return this.getActivities().pipe(
       map((data) =>
-        data.filter((activity) => new Date(activity.startDate).getDate() === date.getDate(),
-    ))
+        data.filter((activity) =>this.dateCompare(new Date(activity.startDate), date))
+      )
     );
   }
 
@@ -38,5 +36,11 @@ export class AcivityServiceService {
 
   addActivity(activity: Activity) {
     return this.http.post<Activity>('http://localhost:8000/activities', activity).subscribe();
+  }
+
+  private dateCompare(date1: Date, date2: Date) { //para que solo se compruebe por fecha sin horas ni minutos
+    date1.setHours(0, 0, 0, 0);
+    date2.setHours(0, 0, 0, 0);
+    return date1.getTime() === date2.getTime();
   }
 }

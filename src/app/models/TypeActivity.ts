@@ -1,10 +1,10 @@
 export class TypeActivity {
     id: number;
     name: string;
-    numOfMonitors: number;
+    monitors: number;
     constructor(id: number, name: string, numOfMonitors: number) {
         this.id = id;
         this.name = name;
-        this.numOfMonitors = numOfMonitors;
+        this.monitors = numOfMonitors;
     }
 }

@@ -39,6 +39,5 @@ export class CalendarComponent {
 
   onDateSelected(newDate: Date): void {
     this.dateChange.emit(newDate);
-    console.log(newDate);
   }
 }

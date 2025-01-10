@@ -5,21 +5,48 @@
 
 #contenedorActividad {
   background-color: rgb(226, 226, 226);
-  width: 70vh;
+  width: 75vh;
   height: 20vh;
-  position: relative;
+  
 
-  .scrollable-div {
+  #scrollableDiv > * {
+    width: 15vh; // Tamaño fijo para cada monitor
+    height: 100%; // Altura igual al contenedor
+    flex-shrink: 0; // Evita que los elementos se reduzcan
+    overflow: hidden; // Oculta contenido que excede el tamaño
+    white-space: nowrap; // Evita que el texto se divida en varias líneas
+    text-overflow: ellipsis; // Agrega "..." al final de textos largos
+  }
+  
+  #scrollableDiv {
     @include elemntoActividad();
     max-height: 100%; // Ajusta la altura al 100% del contenedor padre
-    width: 40vh;
-    overflow-y: auto; // Activa el scroll vertical para contenido adicional
-    overflow-x: hidden; // Evita el scroll horizontal    
+    width: 43vh; // Define el ancho del contenedor
+    display: flex; // Flex para organizar en fila
+    flex-direction: row; // Los hijos se organizan en línea
+    overflow-x: auto; // Activa el scroll horizontal
+    overflow-y: hidden; // Desactiva el scroll vertical
+    scroll-behavior: smooth; // Scroll suave
+    gap: 1vh; // Espaciado entre los elementos
   }
+  
+    
 
   img {
     @include elemntoActividad();
     width: 16vh;
+  }
+
+  .col-3 {
+    position: relative;
+  }
+  
+  .col-2 {
+    position: relative;
+  }
+
+  .row{
+    position: relative;
   }
 }
 @mixin btnBordeDerecho(){
@@ -41,6 +68,6 @@
 
 .btnCreateActivity{
   position: absolute;
-  right: 20px;
+  right: 0;
   top: 20px
 }

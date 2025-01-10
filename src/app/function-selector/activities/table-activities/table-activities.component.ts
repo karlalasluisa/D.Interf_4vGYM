@@ -50,11 +50,12 @@ export class TableActivitiesComponent implements OnChanges{
 
   setActivities(){
     this.activities.forEach(activity=>{
+      console.log()
       const hours=new Date(activity.startDate).getHours()
       if (hours==10){
         this.activity1=activity;
       }
-      else if (hours==13 && activity.startDate.getMinutes()==30){
+      else if (hours==13 && new Date(activity.startDate).getMinutes()==30){
         this.activity2=activity;
       }
       else if (hours==17 && new Date(activity.startDate).getMinutes()==30){

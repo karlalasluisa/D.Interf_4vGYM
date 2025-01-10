@@ -3,7 +3,7 @@ import { TypeActivity } from "./TypeActivity";
 
 export class Activity {
     id: number;
-    type: TypeActivity;
+    activityType: TypeActivity;
     monitors: Monitor[];
     startDate: Date;
     endDate: Date;
@@ -14,6 +14,6 @@ export class Activity {
         this.startDate = Sdate;
         this.endDate = Edate;
         this.monitors = monitors;
-        this.type = type;
+        this.activityType = type;
     }
 }
