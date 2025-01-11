@@ -6,7 +6,9 @@ import { TableActivitiesComponent } from './table-activities/table-activities.co
   selector: 'app-activities',
   imports: [CalendarComponent, TableActivitiesComponent],
   templateUrl: './activities.component.html',
-  styleUrl: './activities.component.scss'
+  styleUrl: './activities.component.scss',
+  standalone: true,
+
 })
 export class ActivitiesComponent {
   selected: Date = new Date();

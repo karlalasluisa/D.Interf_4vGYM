@@ -1,19 +1,16 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from './navbar/navbar.component';
-import { FunctionSelectorComponent } from './function-selector/function-selector.component';
-import { ActivitiesComponent } from './function-selector/activities/activities.component';
-
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, FunctionSelectorComponent, ActivitiesComponent], 
+  imports: [NavbarComponent, RouterOutlet, RouterLink, RouterLinkActive], 
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  standalone: true,
+
 })
 export class AppComponent {
   title = '4vGYMAppDI';
   currentView: string = 'activities'; // Vista inicial
 
-  updateView(view: string): void {
-    this.currentView = view;
-  }
 }

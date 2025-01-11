@@ -1,0 +1,32 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.carousel {
+    display: flex;
+    scroll-behavior: smooth;
+}
+.custom-carousel-icon {
+    color: #B22222;
+    /* Rojo más oscuro, ajusta si es necesario */
+    font-size: 2.5rem;
+    /* Tamaño grande */
+    cursor: pointer;
+    /* Icono clicable */
+    text-shadow: 1px 1px 2px #B22222;
+    /* Simula grosor con sombra */
+}
+
+.custom-carousel-icon:hover {
+    color: #8B0000;
+    /* Rojo más oscuro al pasar el cursor */
+    text-shadow: 2px 2px 4px #8B0000;
+    /* Más sombra para efecto hover */
+}

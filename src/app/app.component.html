@@ -1,3 +1,18 @@
 <app-navbar/>
-<app-function-selector (viewChanged)="updateView($event)"></app-function-selector>
-<app-activities class="w-100 h-100"></app-activities>
+<!--<app-activities class="w-100 h-100"></app-activities>-->
+
+<router-outlet></router-outlet> <!-- Aquí se cargan las rutas -->
+
+<!-- Navegación routing inferior -->
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid d-flex justify-content-center  align-items-center">
+        <a routerLink="/information-activities" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link d-flex align-items-center me-4 text-danger">
+            <i class="bi bi-calendar-plus fs-2 me-3"></i> 
+            <span class=" h2">ACTIVIDADES</span>
+        </a>
+        <a routerLink="/information-monitors" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link d-flex align-items-center text-secondary">
+            <i class="bi bi-person-fill fs-2 me-3"></i> 
+            <span class="h2">MONITORES</span>
+        </a>
+    </div>
+</nav>

@@ -1,0 +1,49 @@
+.custom-card {
+    background-color: #e6e6e6;
+    border: none;
+    border-radius: 8px;
+
+    h5 {
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .email {
+        color: #555;
+        margin-bottom: 4px;
+        font-size: 0.9rem;
+    }
+
+    .phone {
+        color: #555;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        i {
+            font-size: 1rem;
+        }
+    }
+
+    .btn-danger {
+        background-color: #ff5c5c;
+        border-color: #ff5c5c;
+
+        &:hover {
+            background-color: #e04848;
+            border-color: #e04848;
+        }
+    }
+
+    .btn-warning {
+        background-color: #f0ad4e;
+        border-color: #f0ad4e;
+
+        &:hover {
+            background-color: #ec971f;
+            border-color: #ec971f;
+        }
+    }
+}
