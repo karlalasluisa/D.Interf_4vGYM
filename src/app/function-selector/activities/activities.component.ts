@@ -16,7 +16,10 @@ export class ActivitiesComponent {
   
 
   onDateChange(newDate: Date): void {
+    console.log(this.selected.toISOString());
     this.selected = newDate; // Actualiza la fecha seleccionada = newDate;
+    console.log("2");
+    console.log(newDate.toISOString());
   }
 }
 

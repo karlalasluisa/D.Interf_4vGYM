@@ -68,11 +68,13 @@ export class TableActivitiesComponent implements OnChanges{
   nextDay(){
     this.date.setDate(this.date.getDate() + 1);
     this.dateChange.emit(this.date);
+    console.log("1");
   }
 
   previousDay(){
     this.date.setDate(this.date.getDate() - 1);
     this.dateChange.emit(this.date);
+    console.log("1");
   }
 
 }

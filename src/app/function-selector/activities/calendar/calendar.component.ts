@@ -32,9 +32,11 @@ export class CalendarComponent {
   @Output() dateChange = new EventEmitter<Date>();
   @Input() selectedDate: Date = new Date(); // Fecha inicial (hoy)
   selected: Date = new Date();
+  
   ngOnInit(): void {
-    this. selectedDate = this.selectedDate;
+    this. selected = this.selectedDate;
     this.onDateselected(this.selectedDate);
+    console.log(this.selected);
   }
 
   onDateselected(newDate: Date): void {
