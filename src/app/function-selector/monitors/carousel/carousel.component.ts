@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { MonitorComponent } from './monitor/monitor.component';
 import { MonitorsServiceService } from '../../../Services/monitors-service.service';
 import { Monitor } from '../../../models/Monitor';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-carousel',
-  imports: [MonitorComponent],
+  imports: [MonitorComponent, CommonModule],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss'
 })
