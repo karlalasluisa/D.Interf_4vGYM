@@ -92,7 +92,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "node_modules/bootstrap-icons/font",
+                "output": "assets/bootstrap-icons"
               }
             ],
             "styles": [
