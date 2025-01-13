@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, model, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, model, Output, SimpleChanges} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -30,16 +30,25 @@ emite la fecha para que el padre la reciba
 */
 export class CalendarComponent { 
   @Output() dateChange = new EventEmitter<Date>();
-  @Input() selectedDate: Date = new Date(); // Fecha inicial (hoy)
+  @Input() selectedDate!: Date;
   selected: Date = new Date();
+  
   
   ngOnInit(): void {
     this. selected = this.selectedDate;
     this.onDateselected(this.selectedDate);
-    console.log(this.selected);
+    console.log(this.selected + "fecha cargada");
   }
 
   onDateselected(newDate: Date): void {
     this.dateChange.emit(newDate);
+    //console.log(newDate.toISOString() + "se manda la fecha");
   }
+
+  /*ngOnChanges(changes: SimpleChanges): void {
+    // React a cambios en selectedDate
+    if (changes['selectedDate'] && changes['selectedDate'].currentValue) {
+      this.selected = changes['selectedDate'].currentValue;
+    }
+  }*/
 }

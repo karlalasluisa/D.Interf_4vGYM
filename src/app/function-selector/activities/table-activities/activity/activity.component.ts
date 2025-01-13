@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Activity } from '../../../../models/Activity';
 import { MonitorSimpleComponent } from '../monitor-simple/monitor-simple.component';
 import { CommonModule  } from '@angular/common';
-import $ from 'jquery';
 
 @Component({
   selector: 'app-activity',
@@ -15,7 +14,6 @@ export class ActivityComponent {
 
  getImagUrl() { //depende de id tipo
   if (this.activity != null) {
-    console.log(this.activity.activityType.id);
     switch (this.activity.activityType.id) {
       case 1:
         return "https://media.istockphoto.com/id/500130316/es/foto/mujer-cauc%C3%A1sica-practicar-yoga-en-seashore.jpg?s=612x612&w=0&k=20&c=oGQV3_eiNx8qq6xX8brq2U-UalIsw3vVamJrVRl6eUQ="
@@ -31,5 +29,10 @@ export class ActivityComponent {
  }
   isNull() {
     return this.activity == null;
+  }
+
+  editActivity($event: Event) {
+    $event.preventDefault();
+
   }
 }

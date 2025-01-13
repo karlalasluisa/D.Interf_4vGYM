@@ -10,6 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AcivityServiceService {
 
+  
+
   constructor(private http: HttpClient) { }
 
   getActivities() :Observable<Activity[]>
@@ -19,11 +21,18 @@ export class AcivityServiceService {
   }
 
   getActivitiesByDate(date: Date) {
+    console.log(date);
+    this.getActivities().pipe(
+      map((data) =>
+        console.log(data)
+      )
+    );
     return this.getActivities().pipe(
       map((data) =>
         data.filter((activity) =>this.dateCompare(new Date(activity.startDate), date))
       )
     );
+    
   }
 
   updateActivity(activity: Activity) { 

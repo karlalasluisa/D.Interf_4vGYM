@@ -3,10 +3,12 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Activity } from '../../../models/Activity';
 import { AcivityServiceService } from '../../../Services/acivity-service.service';
 import { ActivityComponent } from './activity/activity.component'
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-table-activities',
-  imports: [ActivityComponent],
+  imports: [ActivityComponent, CommonModule, MatProgressSpinnerModule],
   templateUrl: './table-activities.component.html',
   styleUrl: './table-activities.component.scss'
 })
@@ -16,6 +18,8 @@ export class TableActivitiesComponent implements OnChanges{
   activitiesSubs: Subscription= new Subscription;
   activities : Activity[]=[];
 
+  isLoading = false; // Bandera para mostrar el bocadillo de carga
+
   activity1:Activity|null = null; //inicia las 3 actividades a NULL
   activity2:Activity|null = null;
   activity3:Activity|null = null;
@@ -24,22 +28,32 @@ export class TableActivitiesComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['date'] && !changes['date'].firstChange) {
       this.date=changes['date'].currentValue;
-      this.ngOnInit();
+      this.fetchActivities();
     }
   }
 
   ngOnInit(): void {
-    // Suscríbete para recoger las actividades
+    this.fetchActivities();
+  }
+
+  fetchActivities(): void {
+    this.isLoading = true; // Activar la bandera de carga
+
+    if (this.activitiesSubs) {
+      this.activitiesSubs.unsubscribe();
+    }
+
     this.activitiesSubs = this.service.getActivitiesByDate(this.date).subscribe({
       next: (data) => {
-        this.activities = data; // Asigna las actividades filtradas
+        this.activities = data;
+        this.setActivities();
+        this.isLoading = false; // Desactivar la bandera al terminar
       },
       error: (err) => {
         console.error('Error fetching activities:', err);
+        this.isLoading = false; // Desactivar la bandera incluso en caso de error
       },
     });
-
-    this.setActivities();
   }
 
   ngOnDestroy(): void {
@@ -50,8 +64,11 @@ export class TableActivitiesComponent implements OnChanges{
   }
 
   setActivities(){
+    this.activity1 = null;
+    this.activity2 = null;
+    this.activity3 = null;
+
     this.activities.forEach(activity=>{
-      console.log()
       const hours=new Date(activity.startDate).getHours()
       if (hours==10){
         this.activity1=activity;
@@ -65,13 +82,15 @@ export class TableActivitiesComponent implements OnChanges{
     });
   }
 
-  nextDay(){
+  nextDay($event: Event){
+    $event.preventDefault()
     this.date.setDate(this.date.getDate() + 1);
     this.dateChange.emit(this.date);
     console.log("1");
   }
 
-  previousDay(){
+  previousDay($event: Event){
+    $event.preventDefault()
     this.date.setDate(this.date.getDate() - 1);
     this.dateChange.emit(this.date);
     console.log("1");
