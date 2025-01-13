@@ -3,6 +3,7 @@ import { MonitorComponent } from './monitor/monitor.component';
 import { MonitorsServiceService } from '../../../Services/monitors-service.service';
 import { Monitor } from '../../../models/Monitor';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs/internal/Observable';
 @Component({
   selector: 'app-carousel',
   imports: [MonitorComponent, CommonModule],
@@ -15,15 +16,17 @@ export class CarouselComponent {
   itemsPerPage: number = 3;
   filteredMonitors: Monitor[] = [];
 
+
+  listMonitorsAsync$!: Observable<Monitor[]>;
   constructor(private monitorService: MonitorsServiceService) { }
 
+
   ngOnInit(): void {
-    this.monitorService.getMonitors().subscribe((data) => {
-      this.monitors = data;
-      this.filteredMonitors = [...this.monitors];
-    });
+    this.listMonitorsAsync$ = this.monitorService.getMonitors();
   }
-  // Carrusel movimiento
+
+
+  // Carrusel movimiento.TODO tengo que modificar el funcionamiento
   previous() {
     if (this.currentIndex > 0) {
       this.currentIndex -= this.itemsPerPage;

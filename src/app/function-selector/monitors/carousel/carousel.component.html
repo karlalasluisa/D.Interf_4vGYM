@@ -2,11 +2,30 @@
     <!-- Barra de búsqueda -->
     <div class="input-group ">
         <div class="input-group-prepend">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <svg width="25" height="25" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M32.6667 35L22.1667 24.5C21.3333 25.1667 20.375 25.6944 19.2917 26.0833C18.2083 26.4722 17.0556 26.6667 15.8333 26.6667C12.8056 26.6667 10.2433 25.6178 8.14667 23.52C6.05 21.4222 5.00111 18.86 5 15.8333C5 12.8056 6.04889 10.2433 8.14667 8.14667C10.2444 6.05 12.8067 5.00111 15.8333 5C18.8611 5 21.4239 6.04889 23.5217 8.14667C25.6194 10.2444 26.6678 12.8067 26.6667 15.8333C26.6667 17.0556 26.4722 18.2083 26.0833 19.2917C25.6944 20.375 25.1667 21.3333 24.5 22.1667L35 32.6667L32.6667 35ZM15.8333 23.3333C17.9167 23.3333 19.6878 22.6044 21.1467 21.1467C22.6056 19.6889 23.3344 17.9178 23.3333 15.8333C23.3333 13.75 22.6044 11.9794 21.1467 10.5217C19.6889 9.06389 17.9178 8.33444 15.8333 8.33333C13.75 8.33333 11.9794 9.06278 10.5217 10.5217C9.06389 11.9806 8.33444 13.7511 8.33333 15.8333C8.33333 17.9167 9.06278 19.6878 10.5217 21.1467C11.9806 22.6056 13.7511 23.3344 15.8333 23.3333Z"
+                    fill="#D25B5B" />
+            </svg>
         </div>
         <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar">
     </div>
-
+    
+    <!-- Añadir monitor -->
+    <div class="d-flex justify-content-end">
+        <svg width="90" height="90" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_6_10329)">
+                <path
+                    d="M61.25 116.667C61.25 118.987 62.1719 121.213 63.8128 122.854C65.4537 124.495 67.6793 125.417 70 125.417C72.3206 125.417 74.5462 124.495 76.1872 122.854C77.8281 121.213 78.75 118.987 78.75 116.667V78.75H116.667C118.987 78.75 121.213 77.8282 122.854 76.1872C124.495 74.5463 125.417 72.3207 125.417 70C125.417 67.6794 124.495 65.4538 122.854 63.8129C121.213 62.1719 118.987 61.25 116.667 61.25H78.75V23.3334C78.75 21.0127 77.8281 18.7871 76.1872 17.1462C74.5462 15.5052 72.3206 14.5834 70 14.5834C67.6793 14.5834 65.4537 15.5052 63.8128 17.1462C62.1719 18.7871 61.25 21.0127 61.25 23.3334V61.25H23.3333C21.0127 61.25 18.7871 62.1719 17.1461 63.8129C15.5052 65.4538 14.5833 67.6794 14.5833 70C14.5833 72.3207 15.5052 74.5463 17.1461 76.1872C18.7871 77.8282 21.0127 78.75 23.3333 78.75H61.25V116.667Z"
+                    fill="#D25B5B" />
+            </g>
+            <defs>
+                <clipPath id="clip0_6_10329">
+                    <rect width="140" height="140" fill="white" />
+                </clipPath>
+            </defs>
+        </svg>
+    </div>
     <!-- Carrusel -->
     <div class="d-flex justify-content-between align-items-center mt-4">
         <a (click)="previous()" class="custom-carousel-icon">
@@ -27,8 +46,17 @@
 
         </a>
     
-        <div class="carousel d-flex overflow-hidden" style="width: 70%; height: 200px;">
-            <app-monitor></app-monitor>
+        <div class="carousel d-flex overflow-hidden" style="width: 90%; height: 200px;">
+          <!--   @if (listMonitorsAsync$ | async; as monitors){
+                @for (monitor in monitors){
+                <app-monitor [monitor]="monitor"></app-monitor>
+                }
+            } me salía un error de que angular no usa @if ni @for, sino que debía usar *ngIf y *ngFor  -->
+            <ng-container *ngIf="listMonitorsAsync$ | async as monitors">
+                <div *ngFor="let monitor of monitors">
+                    <app-monitor [monitor]="monitor"></app-monitor>
+                </div>
+            </ng-container>
         </div>
     
         <a (click)="next()" class="custom-carousel-icon">

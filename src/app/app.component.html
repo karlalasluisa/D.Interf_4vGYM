@@ -5,13 +5,17 @@
 
 <!-- Navegación routing inferior -->
 <nav class="navbar bg-body-tertiary fixed-bottom">
-    <div class="container-fluid d-flex justify-content-center  align-items-center">
-        <a routerLink="/information-activities" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link d-flex align-items-center me-4 text-danger">
-            <i class="bi bi-calendar-plus fs-2 me-3"></i> 
-            <span class=" h2">ACTIVIDADES</span>
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+    
+        <a routerLink="/information-activities" routerLinkActive="text-danger" ariaCurrentWhenActive="page"
+            class="nav-link d-flex align-items-center me-4 text-secondary">
+            <i class="bi bi-calendar-plus fs-2 me-3"></i>
+            <span class="h2">ACTIVIDADES</span>
         </a>
-        <a routerLink="/information-monitors" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-link d-flex align-items-center text-secondary">
-            <i class="bi bi-person-fill fs-2 me-3"></i> 
+
+        <a routerLink="/information-monitors" routerLinkActive="text-danger" ariaCurrentWhenActive="page"
+            class="nav-link d-flex align-items-center text-secondary">
+            <i class="bi bi-person-fill fs-2 me-3"></i>
             <span class="h2">MONITORES</span>
         </a>
     </div>
