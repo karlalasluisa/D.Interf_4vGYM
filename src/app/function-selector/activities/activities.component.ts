@@ -1,6 +1,10 @@
 import { Component, ChangeDetectorRef  } from '@angular/core';
 import { CalendarComponent } from './calendar/calendar.component';
 import { TableActivitiesComponent } from './table-activities/table-activities.component';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { Observable } from 'rxjs/internal/Observable';
+import { AcivityServiceService } from '../../Services/acivity-service.service';
+import { DateServiceService } from '../../Services/date-service.service';
 
 @Component({
   selector: 'app-activities',
@@ -11,19 +15,23 @@ import { TableActivitiesComponent } from './table-activities/table-activities.co
 
 })
 export class ActivitiesComponent {
-  [x: string]: any;
+
   selected: Date = new Date();
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private dateService: DateServiceService) {}
 
-  
+  ngOnInit(): void {
+    // Suscribirse a los cambios de fecha desde el servicio
+    this.dateService.dateChanges$.subscribe((newDate: Date) => {
+      this.selected = newDate;
+    });
+
+    // Notificar la fecha inicial al servicio
+    this.dateService.notifyDateChange(this.selected);
+  }
 
   onDateChange(newDate: Date): void {
-    console.log(this.selected.toISOString() + "fecha anteriror al cambio"); 
-    this.selected = newDate; // Actualiza la fecha seleccionada = newDate;
-    console.log("Estamos cambiando de fecha loco");
-    console.log(newDate.toISOString()+ "fecha con cambio");
-    this.cdr.detectChanges();
+    this.dateService.notifyDateChange(newDate); // Actualizar la fecha desde cualquier fuente
   }
 }
 

@@ -5,6 +5,7 @@ import { AcivityServiceService } from '../../../Services/acivity-service.service
 import { ActivityComponent } from './activity/activity.component'
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DateServiceService } from '../../../Services/date-service.service';
 
 @Component({
   selector: 'app-table-activities',
@@ -24,7 +25,7 @@ export class TableActivitiesComponent implements OnChanges{
   activity2:Activity|null = null;
   activity3:Activity|null = null;
 
-  constructor(private service: AcivityServiceService) {}
+  constructor(private service: AcivityServiceService, private dateService: DateServiceService) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['date'] && !changes['date'].firstChange) {
       this.date=changes['date'].currentValue;
@@ -87,6 +88,7 @@ export class TableActivitiesComponent implements OnChanges{
     this.date.setDate(this.date.getDate() + 1);
     this.dateChange.emit(this.date);
     console.log("1");
+    this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
   }
 
   previousDay($event: Event){
@@ -94,6 +96,7 @@ export class TableActivitiesComponent implements OnChanges{
     this.date.setDate(this.date.getDate() - 1);
     this.dateChange.emit(this.date);
     console.log("1");
+    this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
   }
 
 }

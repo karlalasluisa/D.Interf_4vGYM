@@ -4,15 +4,15 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Activity } from '../models/Activity';
 import { map } from 'rxjs/internal/operators/map';
 import { HttpClient } from '@angular/common/http';
+import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AcivityServiceService {
 
-  
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
 
   getActivities() :Observable<Activity[]>
   {

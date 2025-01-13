@@ -2,6 +2,9 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, model, Output, 
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { AcivityServiceService } from '../../../Services/acivity-service.service';
+import { DateServiceService } from '../../../Services/date-service.service';
 
 
 @Component({
@@ -32,17 +35,32 @@ export class CalendarComponent {
   @Output() dateChange = new EventEmitter<Date>();
   @Input() selectedDate!: Date;
   selected: Date = new Date();
+  private subscription!: Subscription;
   
-  
+  constructor(private dateService: DateServiceService) {}
+
+
   ngOnInit(): void {
     this. selected = this.selectedDate;
     this.onDateselected(this.selectedDate);
     console.log(this.selected + "fecha cargada");
+
+    // Suscribirse a los cambios de fecha
+    this.subscription = this.dateService.dateChanges$.subscribe((newDate: Date) => {
+      this.selectedDate = newDate; // Actualizar la fecha seleccionada
+    });
   }
 
   onDateselected(newDate: Date): void {
     this.dateChange.emit(newDate);
+    this.dateService.notifyDateChange(newDate); // Notificar al servicio
     //console.log(newDate.toISOString() + "se manda la fecha");
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   /*ngOnChanges(changes: SimpleChanges): void {
