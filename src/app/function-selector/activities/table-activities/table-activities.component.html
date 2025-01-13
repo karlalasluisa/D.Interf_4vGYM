@@ -9,9 +9,11 @@
             <mat-spinner></mat-spinner>
         </div>
       </div>
-      <p>Cargando actividades...</p>
+      <p>Loading activities...</p>
     </div>
   </div>
+
+  <app-edit-activity *ngIf="isOverlayVisible"></app-edit-activity>
 
 <div class="row">
     <div class="col-2">
@@ -56,7 +58,7 @@
         </p>
     </div>
     <div class="col-8" id="actividad1">
-        <app-activity [activity]="activity1"/>
+        <app-activity [activity]="activity1" (openOverlay)="openOverlay($event)"/>
     </div>
 </div>
 <div class="row">

@@ -6,15 +6,16 @@ import { ActivityComponent } from './activity/activity.component'
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DateServiceService } from '../../../Services/date-service.service';
+import { EditActivityComponent } from "./activity/buttonsComponents/edit-activity/edit-activity.component";
+import { WindowServiceService } from '../../../Services/window-service.service';
 
 @Component({
   selector: 'app-table-activities',
-  imports: [ActivityComponent, CommonModule, MatProgressSpinnerModule],
+  imports: [ActivityComponent, CommonModule, MatProgressSpinnerModule, EditActivityComponent],
   templateUrl: './table-activities.component.html',
   styleUrl: './table-activities.component.scss'
 })
 export class TableActivitiesComponent implements OnChanges{
-  @Output() dateChange = new EventEmitter<Date>();
   @Input() date: Date = new Date();
   activitiesSubs: Subscription= new Subscription;
   activities : Activity[]=[];
@@ -25,7 +26,19 @@ export class TableActivitiesComponent implements OnChanges{
   activity2:Activity|null = null;
   activity3:Activity|null = null;
 
-  constructor(private service: AcivityServiceService, private dateService: DateServiceService) {}
+  isOverlayVisible = false;
+  
+  constructor(private windowService: WindowServiceService, private service: AcivityServiceService, private dateService: DateServiceService) {
+    this.windowService.display$.subscribe((visible) => {
+      this.isOverlayVisible = visible;
+    });
+  }
+
+  openOverlay($event: Event) {
+    $event.preventDefault();
+    this.isOverlayVisible=true;
+  }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['date'] && !changes['date'].firstChange) {
       this.date=changes['date'].currentValue;
@@ -86,16 +99,12 @@ export class TableActivitiesComponent implements OnChanges{
   nextDay($event: Event){
     $event.preventDefault()
     this.date.setDate(this.date.getDate() + 1);
-    this.dateChange.emit(this.date);
-    console.log("1");
     this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
   }
 
   previousDay($event: Event){
     $event.preventDefault()
     this.date.setDate(this.date.getDate() - 1);
-    this.dateChange.emit(this.date);
-    console.log("1");
     this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
   }
 

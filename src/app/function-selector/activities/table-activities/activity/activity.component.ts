@@ -2,15 +2,31 @@ import { Component, Input } from '@angular/core';
 import { Activity } from '../../../../models/Activity';
 import { MonitorSimpleComponent } from '../monitor-simple/monitor-simple.component';
 import { CommonModule  } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { WindowServiceService } from '../../../../Services/window-service.service';
+
 
 @Component({
   selector: 'app-activity',
-  imports: [CommonModule, MonitorSimpleComponent],
+  imports: [CommonModule, MonitorSimpleComponent, MatDialogModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.scss'
 })
 export class ActivityComponent {
  @Input() activity! : Activity | null;
+ 
+ constructor(private windowService: WindowServiceService) {}
+
+ openOverlay($event: Event) {
+     $event.preventDefault();
+     this.windowService.show();
+     if (this.activity != null)
+     this.windowService.setActivityId(this.activity.id);
+   }
+
+ 
+
+  
 
  getImagUrl() { //depende de id tipo
   if (this.activity != null) {

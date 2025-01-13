@@ -5,11 +5,14 @@ import { Activity } from '../models/Activity';
 import { map } from 'rxjs/internal/operators/map';
 import { HttpClient } from '@angular/common/http';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AcivityServiceService {
+
+  
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +24,7 @@ export class AcivityServiceService {
   }
 
   getActivitiesByDate(date: Date) {
-    console.log(date);
+    
     this.getActivities().pipe(
       map((data) =>
         console.log(data)
@@ -34,6 +37,19 @@ export class AcivityServiceService {
     );
     
   }
+
+  getActivityById(id: number) {
+    console.log(id + "es el id en servicio");
+    if (id == null) return this.getActivities();
+    return this.getActivities().pipe(
+      tap((data) => console.log(data)), // Imprime los datos para verificar
+      map((data) =>
+        data.filter((activity) => activity.id === Number(id))
+      )
+      
+    );
+  }
+  
 
   updateActivity(activity: Activity) { 
     return this.http.put<Activity>('http://localhost:8000/activities/' + activity.id, activity).subscribe();
