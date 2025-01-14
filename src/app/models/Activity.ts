@@ -16,4 +16,6 @@ export class Activity {
         this.monitors = monitors;
         this.activityType = type;
     }
+
+    
 }

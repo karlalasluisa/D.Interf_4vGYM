@@ -15,14 +15,18 @@ import { AcivityServiceService } from '../../../../Services/acivity-service.serv
 })
 export class ActivityComponent {
  @Input() activity! : Activity | null;
- 
  constructor(private windowService: WindowServiceService, private activityService: AcivityServiceService) {}
 
- openOverlay($event: Event) {
+ openOverlay($event: Event, button: string){ 
      $event.preventDefault();
      this.windowService.show();
      if (this.activity != null)
-     this.windowService.setActivityId(this.activity.id);
+     this.windowService.setButton(button);
+     $event.preventDefault();
+     if (this.activity != null)
+     this.activityService.notifyActivityChange(this.activity);
+    else console.log("fue null");
+    console.log("desde activity" + this.activity)
    }
 
  
@@ -53,8 +57,4 @@ export class ActivityComponent {
     return this.activity == null;
   }
 
-  editActivity($event: Event) {
-    $event.preventDefault();
-
-  }
 }

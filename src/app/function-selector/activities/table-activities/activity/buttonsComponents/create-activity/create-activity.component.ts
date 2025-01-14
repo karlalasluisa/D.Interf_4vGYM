@@ -1,22 +1,21 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AcivityTypeServiceService } from '../../../../../../Services/acivity-type-service.service';
-import { TypeActivity } from '../../../../../../models/TypeActivity';
-import { MonitorsServiceService } from '../../../../../../Services/monitors-service.service';
 import { Monitor } from '../../../../../../models/Monitor';
 import { Activity } from '../../../../../../models/Activity';
-import { WindowServiceService } from '../../../../../../Services/window-service.service';
+import { TypeActivity } from '../../../../../../models/TypeActivity';
 import { AcivityServiceService } from '../../../../../../Services/acivity-service.service';
+import { AcivityTypeServiceService } from '../../../../../../Services/acivity-type-service.service';
+import { MonitorsServiceService } from '../../../../../../Services/monitors-service.service';
+import { WindowServiceService } from '../../../../../../Services/window-service.service';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
-  selector: 'app-edit-activity',
+  selector: 'app-create-activity',
   imports: [CommonModule],
-  templateUrl: './edit-activity.component.html',
-  styleUrl: './edit-activity.component.scss',
+  templateUrl: './create-activity.component.html',
+  styleUrl: './create-activity.component.scss'
 })
-export class EditActivityComponent {
-  activity!: Activity;
+export class CreateActivityComponent {
+activity!: Activity;
   activityOld: Activity; //actividad que va a guardar el valor inicial de activity
 
   //colecciones para que salgan en el cbo
@@ -103,8 +102,11 @@ export class EditActivityComponent {
 
   getMonitorsRandom():Monitor[] //obtiene lo monitores que no estan asignados a la actividad para que no se repitan
   {
+    while (true) {
       const ranoms = this.monitors.filter(monitor => this.containsIdMonitor(monitor.id) == false);
-      return ranoms
+      return ranoms;
+    }
+    
   }
 
   setRange(n: number) {
@@ -157,9 +159,6 @@ containsIdMonitor(id: number) {
 
 
 
-
-
-
   closeOverlay() {
     this.windowService.clearButton();
   }
@@ -179,5 +178,3 @@ containsIdMonitor(id: number) {
     this.closeOverlay();
   }
 }
-
-

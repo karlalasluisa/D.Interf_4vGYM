@@ -12,10 +12,15 @@ import { tap } from 'rxjs/internal/operators/tap';
 })
 export class AcivityServiceService {
 
-  
+  private dateChangeSubject: ReplaySubject<Activity> = new ReplaySubject(1);
+    activityChanges$: Observable<Activity> = this.dateChangeSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
+  notifyActivityChange(activity: Activity): void {
+    console.log("Fecha notificada desde el servicio: ", activity);
+    this.dateChangeSubject.next(activity );
+  }
 
   getActivities() :Observable<Activity[]>
   {

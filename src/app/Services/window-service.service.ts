@@ -18,15 +18,16 @@ export class WindowServiceService {
     this.display.next(false);
   }
 
-  private activityIdSource = new BehaviorSubject<number | null>(null);
-  activityId$ = this.activityIdSource.asObservable();
+  private activitybuttonSource = new BehaviorSubject<string | null>(null);
+  activityButton$ = this.activitybuttonSource.asObservable();
 
-  setActivityId(id: number) {
-    this.activityIdSource.next(id);
+  setButton(button: string) {
+    this.activitybuttonSource.next(button);
+    alert(button);
   }
 
-  clearActivityId() {
-    this.activityIdSource.next(null);
+  clearButton() {
+    this.activitybuttonSource.next(null);
   }
 
 }
