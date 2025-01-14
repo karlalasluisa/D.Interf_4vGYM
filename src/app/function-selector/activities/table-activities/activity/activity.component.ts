@@ -4,6 +4,7 @@ import { MonitorSimpleComponent } from '../monitor-simple/monitor-simple.compone
 import { CommonModule  } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { WindowServiceService } from '../../../../Services/window-service.service';
+import { AcivityServiceService } from '../../../../Services/acivity-service.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { WindowServiceService } from '../../../../Services/window-service.servic
 export class ActivityComponent {
  @Input() activity! : Activity | null;
  
- constructor(private windowService: WindowServiceService) {}
+ constructor(private windowService: WindowServiceService, private activityService: AcivityServiceService) {}
 
  openOverlay($event: Event) {
      $event.preventDefault();
@@ -25,7 +26,12 @@ export class ActivityComponent {
    }
 
  
-
+   onDeleteActivity($event: Event){
+    $event.preventDefault
+    if (window.confirm(`¿Estas segur@ que quieres borrar la actividad?`)){
+      if (this.activity)this.activityService.deleteActivity(this.activity?.id)
+    }
+   }
   
 
  getImagUrl() { //depende de id tipo

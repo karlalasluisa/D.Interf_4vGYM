@@ -1,19 +1,4 @@
-<div *ngIf="isLoading" class="loading-screen">
-   
-    <div class="loading-message">
-        <div class="row">
-          <div class="col-1">
-  
-          </div>
-          <div class="col-8">
-            <div class="spinner"></div>
-          </div>
-        </div>
-        <p>Loading...</p>
-      </div>
-</div>
-
-<div *ngIf="!isLoading" class="overlay">
+<div class="overlay">
     <div class="container-fluid content">
         <div class="container">
             <form class="p-4"
@@ -21,8 +6,10 @@
                 <!-- Tipo de Actividad -->
                 <div class="mb-3">
                     <label for="tipoActividad" class="form-label">Select a activity type</label>
-                    <select class="form-select" id="tipoActividad" (change)="onActivityTypeChange($event)"
-                        name="tipoActividad">
+                    <select #typeSelect class="form-select" id="tipoActividad" (change)="onActivityTypeChange($event)"
+                        (charge)="onChargeTypes($event)" name="tipoActividad">
+                        <option [value]="-1" selected disabled>Default: {{
+                            this.activity.activityType.name }}</option>
                         <option *ngFor="let type of activityTypes" [value]="type.id">
                             {{ type.name }}
                         </option>
@@ -32,8 +19,9 @@
                 <!-- Monitor Index -->
                 <div *ngIf="activityType" class="mb-3">
                     <label for="monitorN" class="form-label">Monitor Index</label>
-                    <select class="form-select" id="monitorN" (change)="onMonitorIndexChange($event)"
+                    <select id="indexSelect" class="form-select" id="monitorN" (change)="onMonitorIndexChange($event)"
                         name="monitorIndex">
+                        <option value="-1" selected disabled>Select a option</option>
                         <option *ngFor="let index of rangeNumers" [value]="index">
                             {{ index + 1 }}
                         </option>
@@ -41,9 +29,10 @@
                 </div>
 
                 <!-- Monitor -->
-                <div #monitorSelect *ngIf="selectedMonitorIndex !== null" class="mb-3">
+                <div id="monitorSelect" *ngIf="selectedMonitorIndex !== null" class="mb-3">
                     <label for="monitor" class="form-label">Monitor</label>
                     <select class="form-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
+                        <option [value]="monitor.id" selected disabled>{{monitor.name}}</option>
                         <option *ngFor="let monitor of monitors" [value]="monitor.id">
                             {{ monitor.name }}
                         </option>
@@ -53,7 +42,10 @@
                 <!-- Botones -->
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-danger w-45" (click)="onSubmit($event)">Aceptar</button>
-                    <button type="button" class="btn btn-outline-danger w-45">Cancelar</button>
+                    <button type="button" class="btn btn-danger w-45" (click)="onCancel($event)">Cancelar</button>
+                </div>
+                <div *ngIf="invalid" class="alert alert-danger">
+                    You must asign all the monitors                    
                 </div>
             </form>
         </div>

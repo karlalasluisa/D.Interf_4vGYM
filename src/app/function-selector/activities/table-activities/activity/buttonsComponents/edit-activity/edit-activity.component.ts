@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AcivityTypeServiceService } from '../../../../../../Services/acivity-type-service.service';
 import { TypeActivity } from '../../../../../../models/TypeActivity';
 import { CommonModule } from '@angular/common';
@@ -18,10 +18,12 @@ import { AcivityServiceService } from '../../../../../../Services/acivity-servic
 export class EditActivityComponent {
   @Input() activity!: Activity;
 
-  @ViewChild('monitorSelect', { static: false }) monitorSelect!: ElementRef<HTMLSelectElement>;
+  @ViewChild('typeSelect', { static: false }) 
+  typeSelect!: ElementRef<HTMLSelectElement>;
 
   activityTypes: TypeActivity[] = [];
   monitors: Monitor[] = [];
+  monitorsAuxiliar: (Monitor|null)[] = [];
   rangeNumers: number[] = [];
 
   selectedActivityType: number | null = null;
@@ -30,13 +32,16 @@ export class EditActivityComponent {
 
   activityType: TypeActivity | null = null;
   monitor!: Monitor;
+  activityOld: Activity;
 
   activityId: number | null = null;
   private subscription!: Subscription;
 
-  isLoading: boolean = true;
-
-  constructor(private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { }
+  isLoading: boolean = false;
+  invalid: Boolean= false;
+  constructor(private cdr: ChangeDetectorRef,private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { this.activityOld = this.activity; 
+    
+  }
 
 
   closeOverlay() {
@@ -50,16 +55,13 @@ export class EditActivityComponent {
     }
   }
 
-  onSubmit($event: Event) {
-    $event.preventDefault();
-    this.windowService.hide();
-    this.closeOverlay();
-  }/*this.activitiesService.getActivityById(this.activityId==null?-1:this.activityId).subscribe(data => {
+  /*this.activitiesService.getActivityById(this.activityId==null?-1:this.activityId).subscribe(data => {
       this.activity = data[0];
     })*/
   ngOnInit() {
+    
     this.isLoading = true; // Activamos la pantalla de carga
-
+    
     this.subscription = this.windowService.activityId$.subscribe(
       (id) => {
         this.activityId = id;
@@ -68,27 +70,40 @@ export class EditActivityComponent {
           data.forEach(element => {
             if (element.id == (this.activityId == null ? -1 : this.activityId) && this.activity == null) {
               this.activity = element;
-
+              this.getTypes(); // Si es independiente, no afecta la carga
+              this.monitorsAuxiliar = this.activity.monitors
               // Realizamos las operaciones que dependen de activity
               this.activityType = this.activity.activityType;
+              
               this.setRange(this.activityType.numberMonitors);
-              this.monitors = this.activity.monitors;
+              this.getMonitors();
+              this.isLoading = false;
             }
           });
 
-          // Desactivamos la pantalla de carga al terminar
-          this.isLoading = false;
+          
         });
       }
     );
+    
+    //this.rangeNumers = [];
+  }
 
-    this.getTypes(); // Si es independiente, no afecta la carga
-    this.rangeNumers = [];
+  ngAfterViewInit() {
+
+    this.isLoading = true;
+  }
+
+  onLoadingComplete() {
+    this.isLoading = false;
+    this.cdr.detectChanges(); // Forzar la actualización del DOM
   }
 
   getTypes() {
     this.typeService.getTypes().subscribe(data => {
       this.activityTypes = data; // Asignar los datos directamente
+      // Desactivamos la pantalla de carga al terminar
+      this.typeSelect.nativeElement.value = this.activity.activityType.id.toString();
     });
   }
 
@@ -108,10 +123,24 @@ export class EditActivityComponent {
   }
 
   onActivityTypeChange(event: Event) {
-    if (window.confirm(`¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista`)) {
+    
+    if (parseInt((event.target as HTMLSelectElement).value)==-1 || window.confirm(`¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista`)) {
       this.activityTypes.forEach(type => {
-        if (type.id == parseInt((event.target as HTMLSelectElement).value)) {
-          this.activityType = type;
+        if (type.id == this.activity.activityType.id) {
+          this.activity.activityType = type;
+          let count=0;
+          this.monitorsAuxiliar = [];
+          this.activity.monitors.forEach(monitor => {
+            if (count < this.activity.activityType.numberMonitors) {
+              this.monitorsAuxiliar.push(monitor);
+              count++;
+            }
+          });
+          const empty = this.activity.activityType.numberMonitors - this.monitorsAuxiliar.length
+          for (let i = count; i < (empty>=0?empty:0); i++) {
+            this.monitorsAuxiliar.push(null)
+          }
+          
         }
       });
 
@@ -120,19 +149,18 @@ export class EditActivityComponent {
 
       }
     } else {
-
       (event.target as HTMLSelectElement).value = this.activity.activityType.id.toString();
     }
   }
 
   onMonitorIndexChange(event: Event) {
     this.selectedMonitorIndex = parseInt((event.target as HTMLSelectElement).value);
-    this.monitorSelect.nativeElement.value = this.monitors[this.selectedMonitorIndex].id.toString();
+    
     if (this.selectedMonitorN == null) console.log("por hacer validaciones")
     else {
       ;
-      if (window.confirm(`¿Quieres guardar el monitor ` + this.monitor?.name + ` en la posición ` + this.selectedMonitorIndex + `?`)) {
-        this.monitors[this.selectedMonitorIndex] = this.monitor;
+      if (window.confirm(`¿Quieres guardar el monitor ` + this.monitor?.name + ` en la posición ` + (this.selectedMonitorIndex + 1) + `?`)) {
+        
       } else {
 
       }
@@ -147,4 +175,36 @@ export class EditActivityComponent {
       this.monitor = data[0];
     })
   }
+
+  onCancel($event: Event) {
+    $event.preventDefault();
+    this.windowService.hide();
+    this.closeOverlay();
+  }
+
+  onSubmit($event: Event) {
+    $event.preventDefault();
+    
+    let count=0;
+    this.monitorsAuxiliar.forEach((monitor)=>{
+      if (monitor==null){
+        this.invalid = true;
+        return;
+      }
+      count++;
+    })
+    this.activity.monitors=this.monitorsAuxiliar.filter((monitor): monitor is Monitor => monitor !== null);
+    this.activitiesService.updateActivity(this.activity)
+    this.windowService.hide();
+    this.closeOverlay();
+    
+  }
+
+  onChargeTypes($event: Event) {
+    $event.preventDefault();
+    this.getTypes();
+    ($event.target as HTMLSelectElement).value = this.activity.activityType.id.toString();
+  }
 }
+
+
