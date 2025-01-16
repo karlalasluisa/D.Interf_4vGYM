@@ -4,3 +4,9 @@ img{
     background-color: rgb(226, 226, 226);
 }
 
+p {
+    word-wrap: break-word; /* Permite que las palabras largas se partan si es necesario */
+    overflow-wrap: break-word; /* Compatibilidad adicional para envolver palabras */
+    white-space: normal; /* Asegúrate de que el texto no se mantenga en una sola línea */
+  }
+

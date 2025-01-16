@@ -3,8 +3,8 @@ import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatCalendar, MatDatepickerModule} from '@angular/material/datepicker';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { AcivityServiceService } from '../../../Services/acivity-service.service';
-import { DateServiceService } from '../../../Services/date-service.service';
+import { AcivityServiceService } from '../../../../Services/acivity-service.service';
+import { DateServiceService } from '../../../../Services/date-service.service';
 
 
 @Component({

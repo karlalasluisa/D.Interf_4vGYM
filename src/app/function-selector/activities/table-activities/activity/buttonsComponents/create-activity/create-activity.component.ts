@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { Monitor } from '../../../../../../models/Monitor';
-import { Activity } from '../../../../../../models/Activity';
-import { TypeActivity } from '../../../../../../models/TypeActivity';
-import { AcivityServiceService } from '../../../../../../Services/acivity-service.service';
-import { AcivityTypeServiceService } from '../../../../../../Services/acivity-type-service.service';
-import { MonitorsServiceService } from '../../../../../../Services/monitors-service.service';
-import { WindowServiceService } from '../../../../../../Services/window-service.service';
+import { Monitor } from '../../../../../../../models/Monitor';
+import { Activity } from '../../../../../../../models/Activity';
+import { TypeActivity } from '../../../../../../../models/TypeActivity';
+import { AcivityServiceService } from '../../../../../../../Services/acivity-service.service';
+import { AcivityTypeServiceService } from '../../../../../../../Services/acivity-type-service.service';
+import { MonitorsServiceService } from '../../../../../../../Services/monitors-service.service';
+import { WindowServiceService } from '../../../../../../../Services/window-service.service';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { DateServiceService } from '../../../../../../Services/date-service.service';
+import { DateServiceService } from '../../../../../../../Services/date-service.service';
 import _ from 'lodash';
 
 
@@ -113,12 +113,11 @@ export class CreateActivityComponent {
   //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
   onMonitorIndexChange(event: Event) {
-    const selectElement = document.getElementById('monitor') as HTMLSelectElement;
+    //const selectElement = document.getElementById('monitor') as HTMLSelectElement;
 
-    alert()
-    if (this.indexAuxiliar != -1 &&  this.monitorAuxiliar != null && (this.monitorsNew[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) && window.confirm(`¿Quieres guardar el monitor ${this.monitorAuxiliar.name} en la posición ${this.indexAuxiliar + 1}?`)) {
+    if (this.indexAuxiliar != -1 &&  this.monitorAuxiliar != null && (this.monitorsNew[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) && window.confirm(`Do you want to save the monitor ${this.monitorAuxiliar.name} in the position ${this.indexAuxiliar + 1}?`)) {
       const actualMonitor = _.cloneDeep(this.monitorsNew[this.indexAuxiliar]);
-      if (actualMonitor != null && this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor.id != this.monitorAuxiliar.id) {
+      if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor?.id != this.monitorAuxiliar.id) {
         alert("the monitor is already assigned");
       } else {
         this.monitorsNew[this.indexAuxiliar] = this.monitorAuxiliar;
@@ -130,7 +129,7 @@ export class CreateActivityComponent {
     this.monitorAuxiliar = this.monitorsNew[this.indexAuxiliar];
     
     this.viewMonitor = this.monitorsNew[this.indexAuxiliar];
-    if (!this.viewMonitor) selectElement.value = "-1";
+    //if (!this.viewMonitor) selectElement.value = "-1";
   }
 
 
@@ -228,8 +227,8 @@ export class CreateActivityComponent {
   }
 
   saveTheLast(){
-    if (this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.activity.monitors[this.indexAuxiliar].id && window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`)) 
-      this.activity.monitors[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
+    if (this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.monitorsNew[this.indexAuxiliar]?.id && window.confirm("Do you want to save the monitor" + this.monitorAuxiliar.name +" at position "+ (this.indexAuxiliar + 1) + "?")) 
+      this.monitorsNew[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
   }
 
   onSubmit($event: Event) {
@@ -238,7 +237,6 @@ export class CreateActivityComponent {
     if (this.assambleActivity()){
 
       //guarda los datos y los updatea
-      
       this.activitiesService.addActivity(this.activity);
       this.activitiesService.notifyActivityChange(this.activity);
       this.windowService.hide();

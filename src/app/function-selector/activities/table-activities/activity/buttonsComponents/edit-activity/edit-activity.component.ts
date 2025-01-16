@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AcivityTypeServiceService } from '../../../../../../Services/acivity-type-service.service';
-import { TypeActivity } from '../../../../../../models/TypeActivity';
-import { MonitorsServiceService } from '../../../../../../Services/monitors-service.service';
-import { Monitor } from '../../../../../../models/Monitor';
-import { Activity } from '../../../../../../models/Activity';
-import { WindowServiceService } from '../../../../../../Services/window-service.service';
-import { AcivityServiceService } from '../../../../../../Services/acivity-service.service';
+import { AcivityTypeServiceService } from '../../../../../../../Services/acivity-type-service.service';
+import { TypeActivity } from '../../../../../../../models/TypeActivity';
+import { MonitorsServiceService } from '../../../../../../../Services/monitors-service.service';
+import { Monitor } from '../../../../../../../models/Monitor';
+import { Activity } from '../../../../../../../models/Activity';
+import { WindowServiceService } from '../../../../../../../Services/window-service.service';
+import { AcivityServiceService } from '../../../../../../../Services/acivity-service.service';
 import { CommonModule } from '@angular/common';
 import _ from 'lodash';
 

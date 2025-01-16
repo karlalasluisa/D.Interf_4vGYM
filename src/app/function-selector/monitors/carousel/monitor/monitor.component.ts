@@ -1,5 +1,5 @@
 import { Component,Input } from '@angular/core';
-import { Monitor } from '../../../../models/Monitor'; 
+import { Monitor } from '../../../../../models/Monitor'; 
 @Component({
   selector: 'app-monitor',
   imports: [],

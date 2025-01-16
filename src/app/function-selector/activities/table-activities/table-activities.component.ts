@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { Activity } from '../../../models/Activity';
-import { AcivityServiceService } from '../../../Services/acivity-service.service';
+import { Activity } from '../../../../models/Activity';
+import { AcivityServiceService } from '../../../../Services/acivity-service.service';
 import { ActivityComponent } from './activity/activity.component'
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DateServiceService } from '../../../Services/date-service.service';
+import { DateServiceService } from '../../../../Services/date-service.service';
 import { EditActivityComponent } from "./activity/buttonsComponents/edit-activity/edit-activity.component";
-import { WindowServiceService } from '../../../Services/window-service.service';
+import { WindowServiceService } from '../../../../Services/window-service.service';
 import { CreateActivityComponent } from './activity/buttonsComponents/create-activity/create-activity.component';
 
 @Component({

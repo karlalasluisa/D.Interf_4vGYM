@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { Activity } from '../../../../models/Activity';
+import { Activity } from '../../../../../models/Activity';
 import { MonitorSimpleComponent } from './monitor-simple/monitor-simple.component';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
-import { WindowServiceService } from '../../../../Services/window-service.service';
-import { AcivityServiceService } from '../../../../Services/acivity-service.service';
+import { WindowServiceService } from '../../../../../Services/window-service.service';
+import { AcivityServiceService } from '../../../../../Services/acivity-service.service';
 
 
 @Component({
@@ -28,13 +28,11 @@ export class ActivityComponent {
     if (this.activity != null)
       this.windowService.setButton(button);
     else this.windowService.setButton('create');
-    if (button='create'){
+    if (button=='create'){
       this.windowService.setIndex(this.index);
-      
     }
-    if (this.activity != null)
+    if (this.activity != null && button=='edit')
       this.activityService.notifyActivityChange(this.activity);
-    else console.log("fue null");
     
     this.windowService.index$.subscribe(data => this.indexAuxiliar = data);
     if (this.activity == null) {

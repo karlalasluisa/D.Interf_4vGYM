@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Monitor } from '../../../../../models/Monitor';
-import { Activity } from '../../../../../models/Activity';
+import { Monitor } from '../../../../../../models/Monitor';
+import { Activity } from '../../../../../../models/Activity';
 @Component({
   selector: 'app-monitor-simple',
   imports: [],

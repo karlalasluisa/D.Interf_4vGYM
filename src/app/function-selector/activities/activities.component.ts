@@ -3,8 +3,8 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { TableActivitiesComponent } from './table-activities/table-activities.component';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { AcivityServiceService } from '../../Services/acivity-service.service';
-import { DateServiceService } from '../../Services/date-service.service';
+import { AcivityServiceService } from '../../../Services/acivity-service.service';
+import { DateServiceService } from '../../../Services/date-service.service';
 
 @Component({
   selector: 'app-activities',

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MonitorComponent } from './monitor/monitor.component';
-import { MonitorsServiceService } from '../../../Services/monitors-service.service';
-import { Monitor } from '../../../models/Monitor';
+import { MonitorsServiceService } from '../../../../Services/monitors-service.service';
+import { Monitor } from '../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
 @Component({
