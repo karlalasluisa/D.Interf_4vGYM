@@ -64,3 +64,32 @@
     font-weight: bold;
   }
 }
+
+.select-container {
+  position: relative;
+  //display: inline-block;
+}
+
+/* Estilo del tooltip */
+.tooltip {
+  position: absolute;
+  top: -30px; /* Ajusta según dónde quieras el tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 1000;
+}
+
+/* Mostrar el tooltip cuando haces hover */
+.select-container:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}

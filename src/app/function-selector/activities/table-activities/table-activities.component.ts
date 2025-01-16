@@ -40,6 +40,8 @@ export class TableActivitiesComponent implements OnChanges{
         this.button = button;
       }
     });
+
+    this.dateService.notifyDateChange(this.date);
   }
 
   openOverlay($event: Event) {
@@ -115,5 +117,7 @@ export class TableActivitiesComponent implements OnChanges{
     this.date.setDate(this.date.getDate() - 1);
     this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
   }
+
+  
 
 }

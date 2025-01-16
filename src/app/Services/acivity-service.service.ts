@@ -12,12 +12,12 @@ import { tap } from 'rxjs/internal/operators/tap';
 })
 export class AcivityServiceService {
 
-  private dateChangeSubject: ReplaySubject<Activity> = new ReplaySubject(1);
-    activityChanges$: Observable<Activity> = this.dateChangeSubject.asObservable();
+  private dateChangeSubject: ReplaySubject<Activity|null> = new ReplaySubject(1);
+    activityChanges$: Observable<Activity|null> = this.dateChangeSubject?.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  notifyActivityChange(activity: Activity): void {
+  notifyActivityChange(activity: Activity|null): void {
     console.log("Fecha notificada desde el servicio: ", activity);
     this.dateChangeSubject.next(activity );
   }
@@ -57,7 +57,9 @@ export class AcivityServiceService {
   
 
   updateActivity(activity: Activity) { 
-    return this.http.put<Activity>('http://localhost:8000/activities/' + activity.id, activity).subscribe();
+    
+    
+    return this.http.put<Activity>('http://localhost:8000/activities/' + activity.id, this.getJsonActivity(activity)).subscribe();
   }
 
   deleteActivity(id: number) {
@@ -65,12 +67,34 @@ export class AcivityServiceService {
   }
 
   addActivity(activity: Activity) {
-    return this.http.post<Activity>('http://localhost:8000/activities', activity).subscribe();
+    
+
+    return this.http.post<Activity>('http://localhost:8000/activities', this.getJsonActivity(activity)).subscribe();
   }
 
   private dateCompare(date1: Date, date2: Date) { //para que solo se compruebe por fecha sin horas ni minutos
     date1.setHours(0, 0, 0, 0);
     date2.setHours(0, 0, 0, 0);
     return date1.getTime() === date2.getTime();
+  }
+
+  private getJsonActivity(activity: Activity) {//funcion que cambia la actividad en formato json
+    const formatDate = (date: Date) => {
+      const d = new Date(date);
+      return d.getFullYear() +
+          '-' + String(d.getMonth() + 1).padStart(2, '0') +
+          '-' + String(d.getDate()).padStart(2, '0') +
+          'T' + String(d.getHours()).padStart(2, '0') +
+          ':' + String(d.getMinutes()).padStart(2, '0') +
+          ':' + String(d.getSeconds()).padStart(2, '0');
+  };
+  
+  const payload = {
+      idType: activity.activityType.id, // Compatible con idType
+      monitors: activity.monitors.map(monitor => monitor.id), // Lista de IDs
+      start_date: formatDate(activity.startDate), // Fecha formateada correctamente
+      end_date: formatDate(activity.endDate) // Fecha formateada correctamente
+  };
+  return payload;
   }
 }

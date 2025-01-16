@@ -1,3 +1,5 @@
+
+
 <div class="overlay">
     <div class="container-fluid content">
         <div class="container">
@@ -8,8 +10,7 @@
                     <label for="tipoActividad" class="form-label">Select a activity type</label>
                     <select #typeSelect class="form-select" id="tipoActividad" (change)="onActivityTypeChange($event)"
                         name="tipoActividad">
-                        <option [value]="" selected disabled>Default: {{
-                            this.activity.activityType.name }}</option>
+                        <option [value]="-1" selected disabled>Select a option</option>
                         <option *ngFor="let type of activityTypes" [value]="type.id">
                             {{ type.name }}
                         </option>
@@ -17,7 +18,8 @@
                 </div>
 
                 <!-- Monitor Index -->
-                <div class="mb-3">
+                <div class="mb-3 select-container" *ngIf="activityTypeNew != null">
+                    <div class="tooltip">Select a monitor and then select a diferent index to save the selected monitor at this index</div>
                     <label for="monitorN" class="form-label">Monitor Index</label>
                     <select id="indexSelect" class="form-select" id="monitorN" (change)="onMonitorIndexChange($event)"
                         name="monitorIndex">
@@ -29,11 +31,20 @@
                 </div>
 
                 <!-- Monitor -->
-                <div id="monitorSelect" *ngIf="indexAuxiliar != -1 && monitorAuxiliar != null" class="mb-3">
+                <div id="monitorSelect" *ngIf="indexAuxiliar != -1" class="mb-3">
                     <label for="monitor" class="form-label">Monitor</label>
                     <select class="form-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
-                        <option [value]="monitorAuxiliar.id" selected disabled>Default:{{ monitorAuxiliar.name }}
-                        </option>
+                        <ng-container *ngIf="viewMonitor != null; else noMonitor">
+                            <option [value]="viewMonitor.id" selected disabled>
+                                Default: {{ viewMonitor.name }}
+                            </option>
+                        </ng-container>
+                        <ng-template #noMonitor>
+                            <option [value]="-1" selected disabled>
+                                Select an option
+                            </option>
+                        </ng-template>
+
                         <option *ngFor="let monitor of monitors" [value]="monitor.id">
                             {{ monitor.name }}
                         </option>
@@ -45,6 +56,16 @@
                     <button type="submit" class="btn btn-danger w-45" (click)="onSubmit($event)">Aceptar</button>
                     <button type="button" class="btn btn-danger w-45" (click)="onCancel($event)">Cancelar</button>
                 </div>
+
+                <div *ngIf="!this.isValid" class="alert alert-danger mt-3">
+                    <div class="row">
+                        <p class="col-10">
+                            {{this.message}}
+                        </p>
+                        <button type="button" class="btn-close col-2" aria-label="Close" (click)="closeAlert()"></button>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>

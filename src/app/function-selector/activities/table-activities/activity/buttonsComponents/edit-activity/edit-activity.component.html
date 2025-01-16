@@ -8,16 +8,20 @@
                     <label for="tipoActividad" class="form-label">Select a activity type</label>
                     <select #typeSelect class="form-select" id="tipoActividad" (change)="onActivityTypeChange($event)"
                         name="tipoActividad">
-                        <option [value]="" selected disabled>Default: {{
-                            this.activity.activityType.name }}</option>
+                        <option [value]="this.activity?.activityType?.id" selected disabled>Default: {{
+                            this.activity?.activityType?.name }}</option>
                         <option *ngFor="let type of activityTypes" [value]="type.id">
                             {{ type.name }}
                         </option>
                     </select>
                 </div>
 
+
+
                 <!-- Monitor Index -->
-                <div class="mb-3">
+                <div class="mb-3 select-container">
+                    <!-- Info con hover -->
+                    <div class="tooltip">Select a monitor and then select a diferent index to save the selected monitor at this index</div>
                     <label for="monitorN" class="form-label">Monitor Index</label>
                     <select id="indexSelect" class="form-select" id="monitorN" (change)="onMonitorIndexChange($event)"
                         name="monitorIndex">
@@ -27,6 +31,7 @@
                         </option>
                     </select>
                 </div>
+
 
                 <!-- Monitor -->
                 <div id="monitorSelect" *ngIf="indexAuxiliar != -1 && monitorAuxiliar != null" class="mb-3">

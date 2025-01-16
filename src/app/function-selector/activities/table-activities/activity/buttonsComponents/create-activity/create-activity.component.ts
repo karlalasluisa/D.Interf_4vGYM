@@ -7,6 +7,10 @@ import { AcivityTypeServiceService } from '../../../../../../Services/acivity-ty
 import { MonitorsServiceService } from '../../../../../../Services/monitors-service.service';
 import { WindowServiceService } from '../../../../../../Services/window-service.service';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+import { DateServiceService } from '../../../../../../Services/date-service.service';
+import _ from 'lodash';
+
 
 @Component({
   selector: 'app-create-activity',
@@ -15,8 +19,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './create-activity.component.scss'
 })
 export class CreateActivityComponent {
-activity!: Activity;
-  activityOld: Activity; //actividad que va a guardar el valor inicial de activity
+  activity!: Activity;
+  date!: Date;
+
+  //complementos de la actividad:
+  monitorsNew: (Monitor | null)[] = [];
+  activityTypeNew: TypeActivity | null = null;
 
   //colecciones para que salgan en el cbo
   activityTypes: TypeActivity[] = [];
@@ -24,27 +32,69 @@ activity!: Activity;
   rangeNumers: number[] = []; //renago de index en cbo de la lista de monitores
 
   //variable auxiliares:
+  indexHour: number = -1;
   indexAuxiliar: number = -1;
-  monitorAuxiliar!: Monitor;
+  monitorAuxiliar!: Monitor | null;
+  isValid: boolean = true;
+  message: string = "";
+  viewMonitor: Monitor | null = null;
 
 
 
-  constructor(private cdr: ChangeDetectorRef,private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { 
 
-    this.activitiesService.activityChanges$.subscribe(data => this.activity = data);
-    this.activityOld = this.activity
+  constructor(private dateService: DateServiceService, private cdr: ChangeDetectorRef, private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) {
+    this.windowService.index$.subscribe(data => this.indexHour = data); //recibe el index de la hora de la actividad
     this.setTypes(); // Activamos la pantalla de carga
 
     //generamos todo ya que ya esta seleccionado:
-    this.setRange(this.activity.activityType.numberMonitors);
     this.getMonitors();
-    
+    this.dateService.dateChanges$.subscribe((newDate: Date) => this.date = newDate);
   }
+
+
+
+
+  //CONTROL SOBRE EL CBO DE TIPOS Y ACTIVITYTYPES ////////////////////////////////////////////////////////
+
+
+  async onActivityTypeChange(event: Event) {
+    const oldType = this.activityTypeNew;
+    if (this.activityTypeNew == null || window.confirm("¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista")) {
+      const types = await firstValueFrom(this.typeService.getTypes());
+      this.activityTypeNew = types.find((type) => type != undefined && type.id === parseInt((event.target as HTMLSelectElement).value)) || null;
+      if (this.activityTypeNew != null) this.setRange(this.activityTypeNew.numberMonitors);
+      await this.updateMonitorsList();
+    } else {
+      (event.target as HTMLSelectElement).value = (oldType != null ? oldType.id : -1).toString();
+    }
+  }
+
+
+  //acondicionadores
+  updateMonitorsList() {
+    if (this.activityTypeNew != null && this.activityTypeNew?.numberMonitors > this.monitorsNew.length) {
+      const empty = this.activityTypeNew?.numberMonitors - this.monitorsNew.length // los que faltan
+      for (let i = 0; i < empty; i++) {
+        this.monitorsNew.push(null);
+      }
+    }
+    else if (this.activityTypeNew != null) {//quita de la lista los que sobran
+      this.monitorsNew = this.monitorsNew.slice(this.activityTypeNew.numberMonitors-1, this.monitorsNew.length-1);
+    }
+  }
+
+  setRange(n: number) {
+    this.rangeNumers = [];
+    for (let i = 0; i < n; i++) {
+      this.rangeNumers.push(i);
+    }
+  }
+
 
   //metodos para obtenes listas desde servicios
   setTypes() {
     this.typeService.getTypes().subscribe(data => {
-      this.activityTypes = data; 
+      this.activityTypes = data;
     });
   }
 
@@ -57,97 +107,40 @@ activity!: Activity;
   }
 
 
-//CONTROL SOBRE EL CBO DE TIPOS Y ACTIVITYTYPES ////////////////////////////////////////////////////////
 
-
-  onActivityTypeChange(event: Event) {
-    if(parseInt((event.target as HTMLSelectElement).value)==this.activity.activityType.id) return; //si el id seleccionado el que ya es de por si no hace nada
-
-    if (window.confirm(`¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista`)) {
-      this.activity.activityType = this.activityTypes.filter(type => type.id == parseInt((event.target as HTMLSelectElement).value))[0];
-      if (!this.updateMonitorsList()){
-        (event.target as HTMLSelectElement).value = this.activityOld.activityType.id.toString();
-        this.activity = this.activityOld;
-      }
-      this.setRange(this.activity.activityType.numberMonitors); 
-    }
-    else {
-      (event.target as HTMLSelectElement).value = this.activity.activityType.id.toString();
-    }
-    
-  }
-
-  //acondicionadores
-  updateMonitorsList(){
-    if (this.activity.activityType.numberMonitors > this.activity.monitors.length) {
-      const empty =this.activity.activityType.numberMonitors - this.activity.monitors.length // los que faltan
-      const monitorsOutOfList: Monitor[]= this.getMonitorsRandom() //obtiene los monitores que no estan asignados a la actividad para que no se repitan
-      if (empty <= monitorsOutOfList.length) {
-        for (let i = 0; i < empty; i++) {
-          this.activity.monitors.push(monitorsOutOfList[i]);
-        }
-      }
-      else{
-        alert("No hay suficientes monitores para este tipo de actividad. Va a volver al valor inicial: " + this.activityOld.activityType.name);
-        
-        return false;
-      }
-    }
-    else{//quita de la lista los que sobran
-      this.activity.monitors = this.activity.monitors.slice(this.activity.activityType.numberMonitors-1, this.activity.monitors.length-1);
-
-    }
-    return true
-  }
-
-  getMonitorsRandom():Monitor[] //obtiene lo monitores que no estan asignados a la actividad para que no se repitan
-  {
-    while (true) {
-      const ranoms = this.monitors.filter(monitor => this.containsIdMonitor(monitor.id) == false);
-      return ranoms;
-    }
-    
-  }
-
-  setRange(n: number) {
-    this.rangeNumers = [];
-    for (let i = 0; i < n; i++) {
-      this.rangeNumers.push(i);
-    }
-  }
-
-
-  
   //CONTROL SOBRE EL CBO DE INDEX DE MONITOR E GUARDADO DE MONITORES ////////////////////////////////////////////////////////
-  
-    //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
-  onMonitorIndexChange(event: Event){//utiliza los auxiliares para usar los valores anteriores al cambio si desea guardar
+  //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
-    if (this.indexAuxiliar != -1 && window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`) ) {
-      const actualMonitor = this.activity.monitors[this.indexAuxiliar];
-      
-      if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor.id != this.monitorAuxiliar.id) {
-        alert("El monitor ya se encuentra en la actividad");
+  onMonitorIndexChange(event: Event) {
+    const selectElement = document.getElementById('monitor') as HTMLSelectElement;
+
+    alert()
+    if (this.indexAuxiliar != -1 &&  this.monitorAuxiliar != null && (this.monitorsNew[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) && window.confirm(`¿Quieres guardar el monitor ${this.monitorAuxiliar.name} en la posición ${this.indexAuxiliar + 1}?`)) {
+      const actualMonitor = _.cloneDeep(this.monitorsNew[this.indexAuxiliar]);
+      if (actualMonitor != null && this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor.id != this.monitorAuxiliar.id) {
+        alert("the monitor is already assigned");
+      } else {
+        this.monitorsNew[this.indexAuxiliar] = this.monitorAuxiliar;
       }
-      else {
-        this.activity.monitors[this.indexAuxiliar] = this.monitorAuxiliar;
-        alert("Guardado");
-      }
-    } 
-    
-    //guardar monitor actual (del nuevo index)
+    } else if (this.indexAuxiliar != -1 && this.monitorAuxiliar == null && window.confirm(`Are you sure to store an empty monitor in the position ${this.indexAuxiliar + 1}?`)) {
+      this.monitorsNew[this.indexAuxiliar] = null;
+    }
     this.indexAuxiliar = parseInt((event.target as HTMLSelectElement).value);
-    this.monitorAuxiliar = this.activity.monitors[this.indexAuxiliar];
+    this.monitorAuxiliar = this.monitorsNew[this.indexAuxiliar];
+    
+    this.viewMonitor = this.monitorsNew[this.indexAuxiliar];
+    if (!this.viewMonitor) selectElement.value = "-1";
   }
 
 
-containsIdMonitor(id: number) {
-  return this.activity.monitors.some(monitor => monitor.id === id);
-}
+
+  containsIdMonitor(id: number) {
+    return this.monitorsNew.some(monitor => monitor != null && monitor.id === id);
+  }
 
   //CONTROL SOBRE EL CBO DE  MONITORES ///////////////////////////////////////////////////////////////////////////////
-  
+
 
   async onMonitorChange(event: Event) {
     this.monitorService.getMonitorById(parseInt((event.target as HTMLSelectElement).value)).subscribe(data => {
@@ -155,9 +148,6 @@ containsIdMonitor(id: number) {
     })
     console.log(this.monitorAuxiliar);
   }
-
-
-
 
   closeOverlay() {
     this.windowService.clearButton();
@@ -169,12 +159,91 @@ containsIdMonitor(id: number) {
     this.closeOverlay();
   }
 
+  getDates(){
+    var dateOut: Date=this.date;
+    switch(this.indexHour){
+      case 1:
+        dateOut.setHours(10);
+        dateOut.setMinutes(0);
+        break;
+      case 2:
+        dateOut.setHours(13);
+        dateOut.setMinutes(30);
+        break;
+      case 3:
+        dateOut.setHours(17);
+        dateOut.setMinutes(30);
+        break;
+    }
+
+    return dateOut
+  }
+
+  isValidActivity(){
+    this.message = "";
+    if (this.activityTypeNew==null){
+      this.message+="You must asign a type of activity";
+    }
+    var count =0;
+    this.monitorsNew.forEach(monitor => {
+      count++;
+      if (monitor==null){
+        if (this.message=="") {
+          this.message+="You must asign a monitor at the position ";
+        }
+        if (this.monitorsNew.length>count && this.monitorsNew[count-1]==null){
+          this.message+= count + ", ";
+        }
+        else
+        this.message+= count;
+      }
+    })
+    if (this.indexHour>3 || this.indexHour<1){
+      if (this.message!="") this.message+="\n";
+      this.message+="You must asign a hour";
+    }
+    this.isValid = this.message == "";
+    setTimeout(() => {
+      this.isValid = true;
+    }, 6000);
+    return this.message == "";
+  }
+
+  closeAlert() {
+    this.isValid = true;
+  }
+
+  assambleActivity() {
+    if (this.isValidActivity()){
+      var startDate: Date;
+      startDate = this.getDates();
+      var endDate: Date=  _.cloneDeep(startDate);
+      endDate.setHours(startDate.getHours()+1);
+      endDate.setMinutes(startDate.getMinutes()+30);
+      if (this.activityTypeNew!=null)
+      this.activity = new Activity(-1, startDate, endDate, this.monitorsNew.filter(monitor => monitor != null), this.activityTypeNew);
+      return true;
+    }
+    return false
+  }
+
+  saveTheLast(){
+    if (this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.activity.monitors[this.indexAuxiliar].id && window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`)) 
+      this.activity.monitors[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
+  }
+
   onSubmit($event: Event) {
     $event.preventDefault();
+    this.saveTheLast();
+    if (this.assambleActivity()){
+
+      //guarda los datos y los updatea
+      
+      this.activitiesService.addActivity(this.activity);
+      this.activitiesService.notifyActivityChange(this.activity);
+      this.windowService.hide();
+      this.closeOverlay();
+    }
     
-    //guarda los datos y los updatea
-    this.activitiesService.updateActivity(this.activity)
-    this.windowService.hide();
-    this.closeOverlay();
   }
 }
