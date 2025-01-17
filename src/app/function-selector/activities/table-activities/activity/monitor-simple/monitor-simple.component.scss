@@ -1,0 +1,12 @@
+img{
+    height: 100%;
+    max-height: 11vh;
+    background-color: rgb(226, 226, 226);
+}
+
+p {
+    word-wrap: break-word; /* Permite que las palabras largas se partan si es necesario */
+    overflow-wrap: break-word; /* Compatibilidad adicional para envolver palabras */
+    white-space: normal; /* Asegúrate de que el texto no se mantenga en una sola línea */
+  }
+

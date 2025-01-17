@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Monitor } from '../../../../models/Monitor';
+import { Monitor } from '../../../../../models/Monitor';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-monitor-edit',
   imports: [FormsModule],
   templateUrl: './form-monitor-edit.component.html',
-  styleUrl: './form-monitor-edit.component.scss'
+  styleUrl: './form-monitor-edit.component.scss',
+  standalone: true
 })
 export class FormMonitorEditComponent {
   @Input() monitor!: Monitor; // Recibe el monitor a editar

@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { MonitorComponent } from './monitor/monitor.component';
-import { MonitorsServiceService } from '../../../Services/monitors-service.service';
-import { Monitor } from '../../../models/Monitor';
+import { MonitorsServiceService } from '../../../../Services/monitors-service.service';
+import { Monitor } from '../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
-import { ModalService } from '../../../Services/modal.service';
+import { ModalService } from '../../../../Services/modal.service';
 import { ModalFormsComponent } from "./modal-forms/modal-forms.component";
 import { FormMonitorEditComponent } from './form-monitor-edit/form-monitor-edit.component';
 @Component({
   selector: 'app-carousel',
   imports: [MonitorComponent, CommonModule, ModalFormsComponent, FormMonitorEditComponent],
   templateUrl: './carousel.component.html',
-  styleUrl: './carousel.component.scss'
+  styleUrl: './carousel.component.scss',
+  standalone: true
 })
 export class CarouselComponent {  
   monitors: Monitor[] = [];

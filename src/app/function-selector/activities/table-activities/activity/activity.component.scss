@@ -24,13 +24,17 @@
     width: 43vh; // Define el ancho del contenedor
     display: flex; // Flex para organizar en fila
     flex-direction: row; // Los hijos se organizan en línea
-    overflow-x: auto; // Activa el scroll horizontal
+    overflow-x: hidden; // Activa el scroll horizontal
     overflow-y: hidden; // Desactiva el scroll vertical
     scroll-behavior: smooth; // Scroll suave
     gap: 1vh; // Espaciado entre los elementos
+
+    &:hover{
+      overflow-x: auto; // Activa el scroll horizontal
+    }
   }
   
-    
+
 
   img {
     @include elemntoActividad();

@@ -1,7 +1,10 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, model, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, ViewChild} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {provideNativeDateAdapter} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCalendar, MatDatepickerModule} from '@angular/material/datepicker';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { AcivityServiceService } from '../../../../Services/acivity-service.service';
+import { DateServiceService } from '../../../../Services/date-service.service';
 
 
 @Component({
@@ -14,32 +17,34 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   styleUrl: './calendar.component.scss'
 })
 
-/*Lo voy a explicar por que lo he buscado en foros y convinado con lo que sabía hacer:
-[(selected)]="selected" hace que la fecha seleccionada se actualice en la variable
-(selectedChange)="onDateSelected(selected)" envia la fecha seleccionada al padre
-
-@Output() dateChange = new EventEmitter<Date>(); 
-Es un emisor de eventos (EventEmitter) que notifica al componente padre cada vez que cambia la fecha seleccionada.
-El componente padre puede suscribirse a este evento.
-
-onDateSelected(newDate: Date): void {
-    this.dateChange.emit(newDate);
-    console.log(newDate);
-  }
-emite la fecha para que el padre la reciba
-*/
 export class CalendarComponent { 
-  @Output() dateChange = new EventEmitter<Date>();
-  @Input() selectedDate: Date = new Date(); // Fecha inicial (hoy)
+  @Input() selectedDate!: Date;
+
+  @ViewChild(MatCalendar, { static: false }) calendar!: MatCalendar<Date>; // Referencia al componente MatCalendar: como MatCalendar podía ser nulo, y no es un objeto como tal, se le hace referncia de esta manera. Fuente: ChatGPT
+
   selected: Date = new Date();
-  
+  private subscription!: Subscription;
+
+  constructor(private dateService: DateServiceService) {}
+
   ngOnInit(): void {
-    this. selected = this.selectedDate;
-    this.onDateselected(this.selectedDate);
-    console.log(this.selected);
+
+    // Suscribirse a cambios de fecha desde el servicio
+    this.subscription = this.dateService.dateChanges$.subscribe((newDate: Date) => {
+      this.selected = newDate; // Actualizar la fecha seleccionada
+      if (this.calendar) {
+        this.calendar.updateTodaysDate(); // Actualizar el calendario visualmente
+      }
+    });
   }
 
   onDateselected(newDate: Date): void {
-    this.dateChange.emit(newDate);
+    this.dateService.notifyDateChange(newDate); // Notificar el cambio al servicio
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

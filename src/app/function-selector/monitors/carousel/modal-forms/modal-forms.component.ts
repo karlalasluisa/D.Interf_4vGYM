@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
-import { ModalService } from '../../../../Services/modal.service';
-import { Monitor } from '../../../../models/Monitor';
+import { ModalService } from '../../../../../Services/modal.service';
+import { Monitor } from '../../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-modal-forms',
   imports: [CommonModule],
   templateUrl: './modal-forms.component.html',
-  styleUrl: './modal-forms.component.scss'
+  styleUrl: './modal-forms.component.scss',
+  standalone: true
 })
 export class ModalFormsComponent {
   @Input() titulo: string = 'Editar Monitor';

@@ -1,6 +1,6 @@
 import { Component,Input } from '@angular/core';
-import { Monitor } from '../../../../models/Monitor'; 
-import { ModalService } from '../../../../Services/modal.service';
+import { Monitor } from '../../../../../models/Monitor';
+import { ModalService } from '../../../../../Services/modal.service';
 @Component({
   selector: 'app-monitor',
   imports: [],
