@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component} from '@angular/core';
 import { CarouselComponent } from "./carousel/carousel.component";
 
 

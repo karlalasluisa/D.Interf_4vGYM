@@ -1,4 +1,5 @@
-import { Component,Input } from '@angular/core';
+
+import { Component, Input } from '@angular/core';
 import { Monitor } from '../../../../../models/Monitor';
 import { ModalService } from '../../../../../Services/modal.service';
 @Component({
@@ -10,19 +11,19 @@ import { ModalService } from '../../../../../Services/modal.service';
 
 })
 export class MonitorComponent {
-//Llama al servicio para abrir el Modal y le pasa los datos del MONITor
+  //Llama al servicio para abrir el Modal y le pasa los datos del MONITor
 
 
-  @Input() monitor!: Monitor; 
+  @Input() monitor!: Monitor;
   isModalOpen = false;
 
   constructor(private modalService: ModalService) { }
 
   openModal($event: Event) {
     $event.preventDefault();
-    alert(this.monitor==null);
+    alert(this.monitor == null);
     this.modalService.openEditModal(this.monitor);
-   
+
   }
 
 

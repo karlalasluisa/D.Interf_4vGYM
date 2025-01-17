@@ -28,17 +28,11 @@
     </div>
 </div>
 
-
-<!-- MODAL EDIT -->
- <app-modal-forms *ngIf="showModal" [titulo]="'Editar Monitor'">
-    <app-form-monitor-edit *ngIf="monitorToEdit" [monitor]="monitorToEdit" (cancel)="showModal = false"  (save)="saveChanges($event)"></app-form-monitor-edit>
- </app-modal-forms>
-
-
 <!-- Carrusel -->
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mt-4">
         <a (click)="previous()" class="custom-carousel-icon" [class.disabled]="currentIndex === 0">
+            <!-- <i class="bi bi-chevron-double-left"></i> -->
             <svg width="60" height="60" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_6_10340)">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -54,7 +48,7 @@
         </a>
     
 
-        <div class="carousel" style=" height: 250px;">
+        <div class="carousel d-flex overflow-hidden" style="width: 63%; height: 250px;">
             <!--   @if (listMonitorsAsync$ | async; as monitors){
                     @for (monitor in monitors){
                     <app-monitor [monitor]="monitor"></app-monitor>
@@ -80,6 +74,7 @@
                     </clipPath>
                 </defs>
             </svg>
+            <!-- <i class="bi bi-chevron-double-right"></i> -->
         </a>
     </div>
 

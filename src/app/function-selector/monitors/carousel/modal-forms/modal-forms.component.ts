@@ -18,7 +18,7 @@ export class ModalFormsComponent {
 
       this.monitorEdited = monitor;
     })
-    alert(this.monitorEdited=null);
+    alert(this.monitorEdited = null);
   }
 
 }
