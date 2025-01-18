@@ -1,5 +1,5 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Monitor } from '../../../../../models/Monitor';
 import { ModalService } from '../../../../../Services/modal.service';
 @Component({
@@ -11,28 +11,33 @@ import { ModalService } from '../../../../../Services/modal.service';
 
 })
 export class MonitorComponent {
-  //Llama al servicio para abrir el Modal y le pasa los datos del MONITor
-
 
   @Input() monitor!: Monitor;
-  isModalOpen = false;
+  @Output() edit = new EventEmitter<Monitor>();
 
-  constructor(private modalService: ModalService) { }
 
-  openModal($event: Event) {
-    $event.preventDefault();
+  editMonitor(event: Event): void {
+    event.preventDefault();
+    this.edit.emit(this.monitor);
     alert(this.monitor == null);
-    this.modalService.openEditModal(this.monitor);
-
   }
 
+  //isModalOpen = false;
 
-  closeModal() {
-    this.isModalOpen = false;
-  }
+  // openModal($event: Event) {
+  //   $event.preventDefault();
+  //   alert(this.monitor == null);
+  //   this.modalService.openEditModal(this.monitor);
 
-  saveMonitor(updatedMonitor: Monitor) {
-    this.monitor = { ...updatedMonitor };
-    this.closeModal();
-  }
+  // }
+
+
+  // closeModal() {
+  //   this.isModalOpen = false;
+  // }
+
+  // saveMonitor(updatedMonitor: Monitor) {
+  //   this.monitor = { ...updatedMonitor };
+  //   this.closeModal();
+  // }
 }

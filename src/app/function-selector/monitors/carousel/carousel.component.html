@@ -56,7 +56,7 @@
                 } me salía un error de que angular no usa @if ni @for, sino que debía usar *ngIf y *ngFor  -->
             <ng-container *ngIf="listMonitorsAsync$ | async as monitors">
                 <div *ngFor="let monitor of monitors |slice:currentIndex:currentIndex+itemsPerPage">
-                    <app-monitor [monitor]="monitor"></app-monitor>
+                    <app-monitor [monitor]="monitor" (edit)="editMonitor($event)"></app-monitor>
                 </div>
             </ng-container>
         </div>

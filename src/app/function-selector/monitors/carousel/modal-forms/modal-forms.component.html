@@ -1,13 +1,12 @@
-<div class="modal fade" *ngIf="monitorEdited != null" id="modalForm" tabindex="-1" aria-hidden="true">
+<div class="modal show d-block" *ngIf="monitorEdited" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ titulo }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">{{ isCreating ? 'Crear Monitor' : 'Editar Monitor' }}</h5>
+                <button type="button" class="btn-close" (click)="close()"></button>
             </div>
             <div class="modal-body">
-                <!-- formulario  -->
-                <ng-content></ng-content>
+                <app-form-monitor-edit [monitor]="monitorEdited"></app-form-monitor-edit>
             </div>
         </div>
     </div>

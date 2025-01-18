@@ -10,18 +10,28 @@ export class ModalService {
   //BehaviorSubject es una herramienta que permite emitir eventos
   //permite que otros componentes escuchen cuándo abrir el modal de editar, con datos asociados.
 
+  private monitorSelected = new BehaviorSubject<Monitor | null>(null);
+  monitorSelected$ = this.monitorSelected.asObservable();
 
-  private openModelEditSource = new BehaviorSubject<Monitor | null>(null);
-  openModalEdit$ = this.openModelEditSource.asObservable();
+  private isCreating = new BehaviorSubject<boolean>(false);
+  isCreating$ = this.isCreating.asObservable();
 
-  openEditModal(mon: Monitor) {
-    this.openModelEditSource.next(mon); //
-    this.openModalEdit$.subscribe((monitor) => { alert(monitor?.name) });
+  editMonitor(monitor: Monitor): void {
+    this.monitorSelected.next(monitor);
+    this.isCreating.next(false);
   }
 
-  clearIndex() {
-    this.openModelEditSource.next(null);
+  createMonitor(): void {
+    this.monitorSelected.next(null);
+    this.isCreating.next(true); //creación
   }
-
+ 
+  closeModal(): void {
+    this.monitorSelected.next(null);
+    this.isCreating.next(false);
+  }
+  notifyMonitorUpdated(monitor: Monitor): void {
+    this.monitorSelected.next(monitor);
+  }
 
 }

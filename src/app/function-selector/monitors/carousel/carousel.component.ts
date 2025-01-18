@@ -4,6 +4,7 @@ import { MonitorsServiceService } from '../../../../Services/monitors-service.se
 import { Monitor } from '../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
+import { ModalService } from '../../../../Services/modal.service';
 @Component({
   selector: 'app-carousel',
   imports: [MonitorComponent, CommonModule],
@@ -15,10 +16,11 @@ export class CarouselComponent {
   monitors: Monitor[] = [];
   currentIndex: number = 0;
   itemsPerPage: number = 3;
+  showModal = false;
 
 
   listMonitorsAsync$!: Observable<Monitor[]>;
-  constructor(private monitorService: MonitorsServiceService) { }
+  constructor(private monitorService: MonitorsServiceService, private modalService: ModalService) { }
 
 
   ngOnInit(): void {
@@ -26,6 +28,12 @@ export class CarouselComponent {
     this.listMonitorsAsync$.subscribe((data) => {
       this.monitors = data; // Carga los datos en el arreglo local
     });
+
+    //aquí debería actualizar la lista de monitores al editar y crear
+
+  }
+  editMonitor(monitor: Monitor): void {
+    this.modalService.editMonitor(monitor);
   }
 
 

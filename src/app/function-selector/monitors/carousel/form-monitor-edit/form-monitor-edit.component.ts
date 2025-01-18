@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Monitor } from '../../../../../models/Monitor';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from '../../../../../Services/modal.service';
+import { MonitorsServiceService } from '../../../../../Services/monitors-service.service';
 
 @Component({
   selector: 'app-form-monitor-edit',
@@ -11,11 +13,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class FormMonitorEditComponent {
   @Input() monitor!: Monitor; // Recibe el monitor a editar
-  @Output() save = new EventEmitter<Monitor>(); // Emite el monitor actualizado
   @Output() cancel = new EventEmitter<void>(); // Emite cuando se cancela
 
-  onSubmit() {
-    this.save.emit(this.monitor); // Emitir el monitor actualizado
+  constructor(private modalService: ModalService, private monitorsService: MonitorsServiceService) { }
+  
+  saveMonitor() {
+    this.monitorsService.updateMonitor(this.monitor!).subscribe((updatedMonitor) => {
+      this.modalService.notifyMonitorUpdated(updatedMonitor);
+      this.modalService.closeModal();
+    });
   }
 
   onCancel() {
