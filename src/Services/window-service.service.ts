@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/internal/Subject';
 export class WindowServiceService {//este servicio nos permite mostrar y ocultar la ventana de edicion o creacion de actividades 
   //además facilitamos la comunicacion con el componente padre
 
-  private display = new Subject<boolean>();
+  private display = new Subject<boolean>(); //para mostrar y ocultar la ventana
   display$ = this.display.asObservable();
 
   show() {
@@ -19,7 +19,7 @@ export class WindowServiceService {//este servicio nos permite mostrar y ocultar
     this.display.next(false);
   }
 
-  private activitybuttonSource = new BehaviorSubject<string | null>(null);
+  private activitybuttonSource = new BehaviorSubject<string | null>(null);//para mostrar y ocultar el boton de edicion o creacion
   activityButton$ = this.activitybuttonSource.asObservable();
 
   setButton(button: string) {
@@ -30,7 +30,7 @@ export class WindowServiceService {//este servicio nos permite mostrar y ocultar
     this.activitybuttonSource.next(null);
   }
 
-  private index = new BehaviorSubject<number>(-1); // Cambiado a BehaviorSubject con un valor inicial
+  private index = new BehaviorSubject<number>(-1); // Para saber cual de las 3 horas del día se esta editando
   index$ = this.index.asObservable();
 
   setIndex(index: number) {

@@ -128,8 +128,8 @@ export class EditActivityComponent {
     //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
   onMonitorIndexChange(event: Event){//utiliza los auxiliares para usar los valores anteriores al cambio si desea guardar
-
-    if (this.indexAuxiliar != -1 && window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`) ) {
+    const selectElement = document.getElementById('monitor') as HTMLSelectElement;
+    if (this.indexAuxiliar != -1 && (this.activity?.monitors[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.activity?.monitors[this.indexAuxiliar]?.id)&& window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`) ) {
       const actualMonitor = this.activity?.monitors[this.indexAuxiliar];
       
       if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor?.id != this.monitorAuxiliar.id) {
@@ -145,6 +145,7 @@ export class EditActivityComponent {
     this.indexAuxiliar = parseInt((event.target as HTMLSelectElement).value);
     if (this.activity != null)
     this.monitorAuxiliar = this.activity.monitors[this.indexAuxiliar];
+    selectElement.value = "-1";
   }
 
 

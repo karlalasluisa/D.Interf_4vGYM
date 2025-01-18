@@ -37,7 +37,7 @@
                 <div id="monitorSelect" *ngIf="indexAuxiliar != -1 && monitorAuxiliar != null" class="mb-3">
                     <label for="monitor" class="form-label">Monitor</label>
                     <select class="form-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
-                        <option [value]="monitorAuxiliar.id" selected disabled>Default:{{ monitorAuxiliar.name }}
+                        <option [value]="-1" selected disabled>Default:{{ monitorAuxiliar.name }}
                         </option>
                         <option *ngFor="let monitor of monitors" [value]="monitor.id">
                             {{ monitor.name }}

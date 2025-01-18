@@ -5,6 +5,7 @@ import {MatCalendar, MatDatepickerModule} from '@angular/material/datepicker';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AcivityServiceService } from '../../../../Services/acivity-service.service';
 import { DateServiceService } from '../../../../Services/date-service.service';
+import { Activity } from '../../../../models/Activity';
 
 
 @Component({
@@ -22,13 +23,12 @@ export class CalendarComponent {
 
   @ViewChild(MatCalendar, { static: false }) calendar!: MatCalendar<Date>; // Referencia al componente MatCalendar: como MatCalendar podía ser nulo, y no es un objeto como tal, se le hace referncia de esta manera. Fuente: ChatGPT
 
-  selected: Date = new Date();
+  selected: Date = new Date(); // Fecha seleccionada asociada al calendario y se actualizan entre ellos (variable <-> calendario)
   private subscription!: Subscription;
 
-  constructor(private dateService: DateServiceService) {}
+  constructor(private activityService: AcivityServiceService, private dateService: DateServiceService) {}
 
   ngOnInit(): void {
-
     // Suscribirse a cambios de fecha desde el servicio
     this.subscription = this.dateService.dateChanges$.subscribe((newDate: Date) => {
       this.selected = newDate; // Actualizar la fecha seleccionada
@@ -47,4 +47,6 @@ export class CalendarComponent {
       this.subscription.unsubscribe();
     }
   }
+
+
 }

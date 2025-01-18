@@ -17,42 +17,43 @@ import { CreateActivityComponent } from './activity/buttonsComponents/create-act
   styleUrl: './table-activities.component.scss'
 })
 export class TableActivitiesComponent implements OnChanges{
-  @Input() date: Date = new Date();
+  @Input() date: Date = new Date();//la fecha que va a recibir para coger las actividades
   activitiesSubs: Subscription= new Subscription;
-  activities : Activity[]=[];
+  activities : Activity[]=[];//las actividades que va a recibir
 
   isLoading = false; // Bandera para mostrar el bocadillo de carga
 
-  activity1:Activity|null = null; //inicia las 3 actividades a NULL
+  activity1:Activity|null = null; //inicia las 3 actividades de el día a NULL
   activity2:Activity|null = null;
   activity3:Activity|null = null;
 
-  isOverlayVisible = false;
-  button: string = '';
+  //variables auxilares
+  isOverlayVisible = false; // Bandera para mostrar el overlay (pantalla de edición o creación)
+  button: string = ''; // Variable para almacenar el botón seleccionado =>('edit', 'create')
   
   constructor(private windowService: WindowServiceService, private service: AcivityServiceService, private dateService: DateServiceService) {
     this.windowService.display$.subscribe((visible) => {
-      this.isOverlayVisible = visible;
+      this.isOverlayVisible = visible;//recibe la variable del overlay para mortrar o no pantalla de edicion o creacion
     });
 
     this.windowService.activityButton$.subscribe((button) => {
       if (button) {
-        this.button = button;
+        this.button = button;//reibe el botón clicado
       }
     });
 
-    this.dateService.notifyDateChange(this.date);
+    //this.dateService.notifyDateChange(this.date); //TODO BORRAR
   }
 
-  openOverlay($event: Event) {
+  openOverlay($event: Event) { //función para abrir las pantallasede edi/cre
     $event.preventDefault();
     this.isOverlayVisible=true;
   }
   
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void { //si detecta cambios en la fecha (mediante botones de anterior o siguiente día)
     if (changes['date'] && !changes['date'].firstChange) {
       this.date=changes['date'].currentValue;
-      this.fetchActivities();
+      this.fetchActivities(); // Actualizar las actividades
     }
   }
 
@@ -60,17 +61,20 @@ export class TableActivitiesComponent implements OnChanges{
     this.fetchActivities();
   }
 
-  fetchActivities(): void {
-    this.isLoading = true; // Activar la bandera de carga
+  fetchActivities(): void {// Actualizar las actividades
+    this.isLoading = true; // Activar la bandera de carga --> He pensado en esta opción como una solución 
+                           // al tiempo que tarda en hacer la petición get de actividades y de esta manera 
+                           // no hay errores de sobre carga de peticiones o no parece que no funcione
 
+    
     if (this.activitiesSubs) {
-      this.activitiesSubs.unsubscribe();
+      this.activitiesSubs.unsubscribe();//si ya hay una subscripción la cancela
     }
-
-    this.activitiesSubs = this.service.getActivitiesByDate(this.date).subscribe({
+    
+    this.activitiesSubs = this.service.getActivitiesByDate(this.date).subscribe({//recibe las actividades por fecha
       next: (data) => {
-        this.activities = data;
-        this.setActivities();
+        this.activities = data;//recibe las actividades
+        this.setActivities(); //reparte las actividades en las 3 actividades según las horas
         this.isLoading = false; // Desactivar la bandera al terminar
       },
       error: (err) => {
@@ -88,11 +92,11 @@ export class TableActivitiesComponent implements OnChanges{
   }
 
   setActivities(){
-    this.activity1 = null;
+    this.activity1 = null;//las inicia a null
     this.activity2 = null;
     this.activity3 = null;
 
-    this.activities.forEach(activity=>{
+    this.activities.forEach(activity=>{ //reparte las actividades en las 3 actividades según las horas
       const hours=new Date(activity.startDate).getHours()
       if (hours==10){
         this.activity1=activity;
@@ -106,10 +110,12 @@ export class TableActivitiesComponent implements OnChanges{
     });
   }
 
-  nextDay($event: Event){
+  //Funciones para cambiar de dia
+
+  nextDay($event: Event){ 
     $event.preventDefault()
     this.date.setDate(this.date.getDate() + 1);
-    this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha anterior
+    this.dateService.notifyDateChange(new Date(this.date)); // Notificar fecha seguiente
   }
 
   previousDay($event: Event){

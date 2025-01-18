@@ -79,7 +79,10 @@ export class CreateActivityComponent {
       }
     }
     else if (this.activityTypeNew != null) {//quita de la lista los que sobran
-      this.monitorsNew = this.monitorsNew.slice(this.activityTypeNew.numberMonitors-1, this.monitorsNew.length-1);
+      alert("Los que tiene que haber"+(this.activityTypeNew.numberMonitors-1))
+      alert("Los que tiene"+(this.monitorsNew.length-1))
+      this.monitorsNew = this.monitorsNew.slice(0, this.activityTypeNew.numberMonitors);
+      alert("Los que tiene"+(this.monitorsNew.length-1))
     }
   }
 
@@ -113,13 +116,14 @@ export class CreateActivityComponent {
   //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
   onMonitorIndexChange(event: Event) {
-    //const selectElement = document.getElementById('monitor') as HTMLSelectElement;
+    const selectElement = document.getElementById('monitor') as HTMLSelectElement;
 
     if (this.indexAuxiliar != -1 &&  this.monitorAuxiliar != null && (this.monitorsNew[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) && window.confirm(`Do you want to save the monitor ${this.monitorAuxiliar.name} in the position ${this.indexAuxiliar + 1}?`)) {
       const actualMonitor = _.cloneDeep(this.monitorsNew[this.indexAuxiliar]);
       if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor?.id != this.monitorAuxiliar.id) {
-        alert("the monitor is already assigned");
-      } else {
+        alert("The monitor is already assigned");
+      } 
+      else {
         this.monitorsNew[this.indexAuxiliar] = this.monitorAuxiliar;
       }
     } else if (this.indexAuxiliar != -1 && this.monitorAuxiliar == null && window.confirm(`Are you sure to store an empty monitor in the position ${this.indexAuxiliar + 1}?`)) {
@@ -129,7 +133,7 @@ export class CreateActivityComponent {
     this.monitorAuxiliar = this.monitorsNew[this.indexAuxiliar];
     
     this.viewMonitor = this.monitorsNew[this.indexAuxiliar];
-    //if (!this.viewMonitor) selectElement.value = "-1";
+    if (!this.viewMonitor) selectElement.value = "-1";
   }
 
 
@@ -144,8 +148,9 @@ export class CreateActivityComponent {
   async onMonitorChange(event: Event) {
     this.monitorService.getMonitorById(parseInt((event.target as HTMLSelectElement).value)).subscribe(data => {
       this.monitorAuxiliar = data[0];
+
     })
-    console.log(this.monitorAuxiliar);
+    
   }
 
   closeOverlay() {
@@ -229,6 +234,7 @@ export class CreateActivityComponent {
   saveTheLast(){
     if (this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.monitorsNew[this.indexAuxiliar]?.id && window.confirm("Do you want to save the monitor" + this.monitorAuxiliar.name +" at position "+ (this.indexAuxiliar + 1) + "?")) 
       this.monitorsNew[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
+    else if (this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) alert("the monitor is already assigned");
   }
 
   onSubmit($event: Event) {

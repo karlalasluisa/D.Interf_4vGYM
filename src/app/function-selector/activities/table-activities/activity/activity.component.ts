@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { WindowServiceService } from '../../../../../Services/window-service.service';
 import { AcivityServiceService } from '../../../../../Services/acivity-service.service';
+import { Subscription } from 'rxjs';
+import _ from 'lodash';
 
 
 @Component({
@@ -14,33 +16,43 @@ import { AcivityServiceService } from '../../../../../Services/acivity-service.s
   styleUrl: './activity.component.scss'
 })
 export class ActivityComponent {
-  @Input() index!: number;
-  @Input() activity!: Activity | null;
+  @Input() index!: number; //index de la actividad para saber en que hora se encuentra independientemente de que la actividad sea null
+  @Input() activity!: Activity | null; //la actividad que se va a mostrar (null si no hay actividad)
 
-  indexAuxiliar: number = -1
+  //variables auxiliares
+  indexAuxiliar: number = -1; //varible auxiliar para saber la posicion de la actividad en el array en las actividades de la fecha
+  activitySubscription!: Subscription;
+
   constructor(private windowService: WindowServiceService, private activityService: AcivityServiceService) {
 
    }
 
   openOverlay($event: Event, button: string) {
     $event.preventDefault();
-    this.windowService.show();
-    if (this.activity != null)
-      this.windowService.setButton(button);
+    this.windowService.show(); //notifica para que se abra la pantallade edi/cre
+    if (this.activity != null)//si hay actividad es editar
+      this.windowService.setButton(button); //notifica para que se abra la pantalla según el botón clicado para que en el componente padre sepa que pantalla abrir
     else this.windowService.setButton('create');
-    if (button=='create'){
+    if (button=='create'){ //si se abre la pantalla de creacion se le pasa el index para saber que hora del día se ha seleccionado
       this.windowService.setIndex(this.index);
     }
-    if (this.activity != null && button=='edit')
+    if (this.activity != null && button=='edit')//si se abre la pantalla de edicion se le pasa la actividad actual
+    {
       this.activityService.notifyActivityChange(this.activity);
+    }
+      
     
     this.windowService.index$.subscribe(data => this.indexAuxiliar = data);
-    if (this.activity == null) {
-      if (this.indexAuxiliar != -1 && this.indexAuxiliar == this.index) this.activityService.activityChanges$.subscribe((activity) => this.activity = activity);
+
+    if (this.indexAuxiliar != -1 && this.indexAuxiliar == this.index) {
+      var act: Activity | null = null;
+      this.activitySubscription=this.activityService.activityChanges$.subscribe((activity) => act = activity);
+      this.activitySubscription.unsubscribe();
+      this.activity = _.cloneDeep(act);
+      /*this.activityService.notifyActivityChange(act)
+      this.activity = act;*/
     }
-    else{
-      if (this.indexAuxiliar != -1 && this.indexAuxiliar == this.index) this.activityService.activityChanges$.subscribe((activity) => this.activity = activity);
-    }
+
   }
 
 

@@ -12,6 +12,6 @@ export class AcivityTypeServiceService {
   constructor(private http: HttpClient) { }
 
   getTypes() :Observable<TypeActivity[]>{
-    return this.http.get<TypeActivity[]>('http://localhost:8000/activity_types'); //TODO poner los buenos de web
+    return this.http.get<TypeActivity[]>('http://localhost:8000/activity_types'); 
   }
 }
