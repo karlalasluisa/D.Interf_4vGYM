@@ -1,4 +1,4 @@
-<div class="modal show d-block" *ngIf="monitorEdited" tabindex="-1">
+<div class="modal show d-block" *ngIf="monitorEdited || isCreating" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -6,7 +6,8 @@
                 <button type="button" class="btn-close" (click)="close()"></button>
             </div>
             <div class="modal-body">
-                <app-form-monitor-edit [monitor]="monitorEdited"></app-form-monitor-edit>
+                <!-- creo un monitor vacío porque si no me da error, el form edited no acepta null-->
+                <app-form-monitor-edit [monitor]="monitorEdited || { id: 0, name: '', email: '', phone: '', photo: '' }"></app-form-monitor-edit>
             </div>
         </div>
     </div>

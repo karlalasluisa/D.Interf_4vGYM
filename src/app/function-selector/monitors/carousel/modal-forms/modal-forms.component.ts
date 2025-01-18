@@ -21,6 +21,10 @@ export class ModalFormsComponent {
       this.monitorEdited = monitor;
     })
 
+    this.modalService.isCreating$.subscribe((isCreating) => {
+      this.isCreating = isCreating;
+    })
+
   }
   close(): void{
     this.modalService.closeModal(); 

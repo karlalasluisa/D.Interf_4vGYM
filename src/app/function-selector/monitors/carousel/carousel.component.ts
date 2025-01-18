@@ -28,14 +28,16 @@ export class CarouselComponent {
     this.listMonitorsAsync$.subscribe((data) => {
       this.monitors = data; // Carga los datos en el arreglo local
     });
-
-    //aquí debería actualizar la lista de monitores al editar y crear
-
   }
+
+  // Editar monitor
   editMonitor(monitor: Monitor): void {
     this.modalService.editMonitor(monitor);
   }
-
+  //Crear
+  createMonitor(): void {
+    this.modalService.createMonitor();
+  }
 
   // Carrusel movimiento.TODO tengo que modificar el funcionamiento
   previous() {
@@ -49,7 +51,6 @@ export class CarouselComponent {
       this.currentIndex += this.itemsPerPage;
     }
   }
-
   //Borrar monitor
 
 }

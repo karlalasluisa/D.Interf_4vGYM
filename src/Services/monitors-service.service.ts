@@ -24,7 +24,7 @@ export class MonitorsServiceService {
   }
   addMonitor(monitor: Monitor): Observable<Monitor> {
     return this.http.post<Monitor>('http://localhost:8000/monitors', monitor);
-  }
+  }   
 
   deleteMonitor(id: number): Observable<void> {
     return this.http.delete<void>('http://localhost:8000/monitors/' + id);
