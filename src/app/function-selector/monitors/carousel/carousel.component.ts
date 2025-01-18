@@ -8,13 +8,13 @@ import { Observable } from 'rxjs/internal/Observable';
   selector: 'app-carousel',
   imports: [MonitorComponent, CommonModule],
   templateUrl: './carousel.component.html',
-  styleUrl: './carousel.component.scss'
+  styleUrl: './carousel.component.scss',
+  standalone: true
 })
 export class CarouselComponent {
   monitors: Monitor[] = [];
   currentIndex: number = 0;
   itemsPerPage: number = 3;
-  filteredMonitors: Monitor[] = [];
 
 
   listMonitorsAsync$!: Observable<Monitor[]>;
@@ -23,6 +23,9 @@ export class CarouselComponent {
 
   ngOnInit(): void {
     this.listMonitorsAsync$ = this.monitorService.getMonitors();
+    this.listMonitorsAsync$.subscribe((data) => {
+      this.monitors = data; // Carga los datos en el arreglo local
+    });
   }
 
 
@@ -34,9 +37,11 @@ export class CarouselComponent {
   }
 
   next() {
-    if (this.currentIndex + this.itemsPerPage < this.filteredMonitors.length) {
+    if (this.currentIndex + this.itemsPerPage < this.monitors.length) {
       this.currentIndex += this.itemsPerPage;
     }
   }
+
+  //Borrar monitor
 
 }

@@ -29,7 +29,6 @@ export class EditActivityComponent {
   monitorAuxiliar!: Monitor;
 
 
-
   constructor(private cdr: ChangeDetectorRef,private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { 
 
     this.activitiesService.activityChanges$.subscribe(data => this.activity = data);
@@ -41,8 +40,7 @@ export class EditActivityComponent {
       this.setRange(this.activity.activityType.numberMonitors);
       this.getMonitors();
     }
-    
-    
+
   }
 
   //metodos para obtenes listas desde servicios
