@@ -45,7 +45,7 @@
                             </option>
                         </ng-template>
 
-                        <option *ngFor="let monitor of monitors" [value]="monitor.id">
+                        <option *ngFor="let monitor of monitors" [value]="monitor.id" [ngStyle]="{'background-color': isAtList(monitor.id)}">
                             {{ monitor.name }}
                         </option>
                     </select>

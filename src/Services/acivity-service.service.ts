@@ -13,14 +13,13 @@ import { tap } from 'rxjs/internal/operators/tap';
 export class AcivityServiceService {
 
   public isSaved: boolean = false;
-  private dateChangeSubject: ReplaySubject<Activity | null> = new ReplaySubject(1);//objeto para notificar cambios y facilitar al eliminar/crear/editar acividades
-  activityChanges$: Observable<Activity | null> = this.dateChangeSubject?.asObservable();
+  private activityChangeSubject: ReplaySubject<Activity | null> = new ReplaySubject(1);//objeto para notificar cambios y facilitar al eliminar/crear/editar acividades
+  activityChanges$: Observable<Activity | null> = this.activityChangeSubject?.asObservable();
 
   constructor(private http: HttpClient) { }
 
   notifyActivityChange(activity: Activity | null): void {
-    console.log("Fecha notificada desde el servicio: ", activity);
-    this.dateChangeSubject.next(activity);
+    this.activityChangeSubject.next(activity);
   }
 
   getActivities(): Observable<Activity[]> {

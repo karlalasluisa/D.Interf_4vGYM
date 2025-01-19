@@ -1,9 +1,14 @@
-<a href="" (click)="sendMail($event)" class="text-decoration-none">
+<a href="" (click)="sendMail($event)" class="text-decoration-none" (contextmenu)="handleContextMenu($event)"(mouseenter)="onHover()" 
+(mouseleave)="onNoHover()">
     <div class="d-flex flex-column align-items-center">
         <img src="{{this.monitor.photo}}" class="img-thumbnail mb-2" alt="img-fluid" style="max-width: 150px;">
         <p id="nombre" class="text-center m-0 text-danger">
             {{this.monitor.name}}
         </p>
     </div>
+    
 </a>
+<div *ngIf="isHover" class="info-box">
+    <p>If you left click you will be redirected to the monitor email and if you right click to WhatsApp</p>
+</div>
 
