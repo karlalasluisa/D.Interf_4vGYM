@@ -5,9 +5,10 @@ import { Monitor } from '../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
 import { ModalService } from '../../../../Services/modal.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-carousel',
-  imports: [MonitorComponent, CommonModule],
+  imports: [MonitorComponent, CommonModule, MatProgressSpinnerModule],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss',
   standalone: true
@@ -17,6 +18,7 @@ export class CarouselComponent {
   currentIndex: number = 0;
   itemsPerPage: number = 3;
   showModal = false;
+  isLoading: boolean = false;
 
 
   listMonitorsAsync$!: Observable<Monitor[]>;
@@ -24,10 +26,27 @@ export class CarouselComponent {
 
 
   ngOnInit(): void {
-    this.listMonitorsAsync$ = this.monitorService.getMonitors();
+    this.isLoading = true;
+    
+    this.loadMonitors();
+
+    this.modalService.monitorDeleted$.subscribe((monitorId) => {
+      if (monitorId !== null) {
+        this.loadMonitors();
+      }
+    });
+  
+  }
+  loadMonitors(): void {
+    this.modalService.monitorSelected$.subscribe(() => {
+      this.listMonitorsAsync$ = this.monitorService.getMonitors();
     this.listMonitorsAsync$.subscribe((data) => {
       this.monitors = data; // Carga los datos en el arreglo local
+
+      this.isLoading = false; // Oculta el spinner
     });
+    })
+    
   }
 
   // Editar monitor
@@ -38,7 +57,14 @@ export class CarouselComponent {
   createMonitor(): void {
     this.modalService.createMonitor();
   }
-
+  //Borrar monitor
+  deleteMonitor(monitor: Monitor): void {
+    if (confirm('¿Estas seguro de que deseas eliminar este monitor?')) { 
+      this.monitorService.deleteMonitor(monitor.id).subscribe(() => {
+        this.modalService.deleteMonitor(monitor); //notifica la eliminación
+      });
+    }
+  }
   // Carrusel movimiento.TODO tengo que modificar el funcionamiento
   previous() {
     if (this.currentIndex > 0) {
@@ -47,10 +73,11 @@ export class CarouselComponent {
   }
 
   next() {
+    this.isLoading = true;
     if (this.currentIndex + this.itemsPerPage < this.monitors.length) {
       this.currentIndex += this.itemsPerPage;
     }
+    this.isLoading = false;
   }
-  //Borrar monitor
 
 }

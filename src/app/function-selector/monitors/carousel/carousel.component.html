@@ -1,5 +1,20 @@
 <div class="container mt-3">
     <!-- Barra de búsqueda -->
+
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="loading-message">
+            <div class="row">
+                <div class="col-2">
+    
+                </div>
+                <div class="col-8">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </div>
+            <p>Loading monitors...</p>
+        </div>
+    </div>
+
     <div class="input-group ">
         <div class="input-group-prepend">
             <svg width="25" height="25" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +73,7 @@
                 } me salía un error de que angular no usa @if ni @for, sino que debía usar *ngIf y *ngFor  -->
             <ng-container *ngIf="listMonitorsAsync$ | async as monitors">
                 <div *ngFor="let monitor of monitors |slice:currentIndex:currentIndex+itemsPerPage">
-                    <app-monitor [monitor]="monitor" (edit)="editMonitor($event)"></app-monitor>
+                    <app-monitor [monitor]="monitor" (edit)="editMonitor($event)" (delete)="deleteMonitor($event)"></app-monitor>
                 </div>
             </ng-container>
         </div>

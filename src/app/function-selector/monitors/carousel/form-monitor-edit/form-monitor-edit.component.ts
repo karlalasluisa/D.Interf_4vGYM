@@ -15,6 +15,7 @@ export class FormMonitorEditComponent {
   @Input() monitor!: Monitor; // Recibe el monitor a editar
   @Output() cancel = new EventEmitter<void>(); // Emite cuando se cancela
   isCreating: boolean = false;
+  
 
   constructor(private modalService: ModalService, private monitorsService: MonitorsServiceService) { }
   
@@ -28,19 +29,11 @@ export class FormMonitorEditComponent {
     })
   }
   saveMonitor() {
+    //todo falta recargar la lista
     if (this.isCreating) {
-      alert("Monitor ");
-
-      this.monitorsService.addMonitor(this.monitor!).subscribe(
-        (addMonitor) => {
-          this.modalService.notifyMonitorUpdated(addMonitor);
-          this.modalService.closeModal();
-          alert("Monitor creado");
-        },
-        (error) => {
-          // Captura y muestra cualquier error
-          console.error("Error al crear el monitor", error);
-          alert("Error al crear el monitor");
+      this.monitorsService.addMonitor(this.monitor!).subscribe((addMonitor) => {
+        this.modalService.notifyMonitorUpdated(addMonitor);
+        this.modalService.closeModal();
         }
       );
     }
