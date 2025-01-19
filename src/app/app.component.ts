@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from './navbar/navbar.component';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { Activity } from '../models/Activity';
 import { TypeActivity } from '../models/TypeActivity';
 @Component({
@@ -16,5 +16,9 @@ export class AppComponent {
   currentView: string = 'activities'; // Vista inicial
   activity: Activity;
 
-  constructor() {this.activity = new Activity(0, new Date(), new Date(), [], new TypeActivity(1,"", 3)); }
+  constructor(private router: Router) { this.activity = new Activity(0, new Date(), new Date(), [], new TypeActivity(1, "", 3)); }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
 }
