@@ -44,7 +44,7 @@ export class FormMonitorEditComponent {
   }
 
   onCancel() {
-    this.cancel.emit(); // Emitir evento de cancelación
+    this.modalService.closeModal(); // Emitir evento de cancelación
   }
 
 }
