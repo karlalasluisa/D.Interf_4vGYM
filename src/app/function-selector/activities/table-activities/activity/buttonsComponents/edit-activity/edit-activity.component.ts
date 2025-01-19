@@ -27,6 +27,7 @@ export class EditActivityComponent {
   //variable auxiliares:
   indexAuxiliar: number = -1;
   monitorAuxiliar!: Monitor;
+  monitorView: Monitor | null = null;
 
 
   constructor(private cdr: ChangeDetectorRef,private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { 
@@ -65,7 +66,7 @@ export class EditActivityComponent {
   async onActivityTypeChange(event: Event) {
     if(parseInt((event.target as HTMLSelectElement).value)==this.activity?.activityType.id) return; //si el id seleccionado el que ya es de por si no hace nada
 
-    if (window.confirm(`¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista`)) {
+    if (window.confirm(`Do you want to change your type of activity? Monitors that are left over from the list will be removed`)) {
       
       if (await this.updateMonitorsList(this.activityTypes.filter(type => type.id == parseInt((event.target as HTMLSelectElement).value))[0])==false){
         (event.target as HTMLSelectElement).value = this.activityOld.activityType.id.toString();
@@ -95,7 +96,7 @@ export class EditActivityComponent {
         }
       }
       else{
-        alert("No hay suficientes monitores para este tipo de actividad. Va a volver al valor inicial: " + this.activityOld.activityType.name);
+        alert("There are not enough monitors for this type of activity. It will return to the initial value: " + this.activityOld.activityType.name);
         
         return false;
       }
@@ -131,11 +132,11 @@ export class EditActivityComponent {
       const actualMonitor = this.activity?.monitors[this.indexAuxiliar];
       
       if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor?.id != this.monitorAuxiliar.id) {
-        alert("El monitor ya se encuentra en la actividad");
+        alert("The monitor has already been assigned to another position");
       }
       else if (this.activity != null){
         this.activity.monitors[this.indexAuxiliar] = this.monitorAuxiliar;
-        alert("Guardado");
+        alert("Saved");
       }
     } 
     
@@ -143,6 +144,7 @@ export class EditActivityComponent {
     this.indexAuxiliar = parseInt((event.target as HTMLSelectElement).value);
     if (this.activity != null)
     this.monitorAuxiliar = this.activity.monitors[this.indexAuxiliar];
+    this.monitorView = _.cloneDeep(this.monitorAuxiliar);
     selectElement.value = "-1";
   }
 
@@ -163,8 +165,13 @@ export class EditActivityComponent {
 
 
   saveTheLast(){
-    if (this.activity != null && this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.activity.monitors[this.indexAuxiliar].id && window.confirm(`¿Quieres guardar el monitor ` + this.monitorAuxiliar.name + ` en la posición ` + (this.indexAuxiliar + 1) + `?`)) 
+    if (this.activity != null && this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.activity.monitors[this.indexAuxiliar].id && window.confirm(`Do you want to save the monitor ` + this.monitorAuxiliar.name + ` at the position ` + (this.indexAuxiliar + 1) + `?`)) 
+    {
       this.activity.monitors[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
+
+    }
+    else if (this.monitorAuxiliar?.id != this.activity?.monitors[this.indexAuxiliar]?.id && this.containsIdMonitor(this.monitorAuxiliar.id)) alert("The monitor "+this.monitorAuxiliar.name+" is already assigned");
+
   }
 
 
@@ -176,7 +183,7 @@ export class EditActivityComponent {
 
   onCancel($event: Event) {
     $event.preventDefault();
-    console.log(this.activityOld);
+    
     if (this.activity != null) {
       this.activity.id = this.activityOld.id;
       this.activity.startDate = this.activityOld.startDate
@@ -184,8 +191,7 @@ export class EditActivityComponent {
       this.activity.monitors = this.activityOld.monitors  
       this.activity.activityType = this.activityOld.activityType
     }
-    
-
+    alert(this.activityOld.activityType.name);
     this.activitiesService.updateActivity(this.activityOld)
     this.windowService.hide();
     this.closeOverlay();
@@ -200,6 +206,11 @@ export class EditActivityComponent {
     this.activitiesService.updateActivity(this.activity)
     this.windowService.hide();
     this.closeOverlay();
+  }
+
+  isAtList(id: number) {
+    if ( this.activity?.monitors.some(monitor => monitor.id === id))return "#FF9A86"
+    else return "#7CDC86"
   }
 }
 

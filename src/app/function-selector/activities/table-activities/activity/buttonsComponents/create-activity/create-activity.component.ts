@@ -63,7 +63,7 @@ export class CreateActivityComponent {
       const types = await firstValueFrom(this.typeService.getTypes());
       this.activityTypeNew = types.find((type) => type != undefined && type.id === parseInt((event.target as HTMLSelectElement).value)) || null;
       if (this.activityTypeNew != null) this.setRange(this.activityTypeNew.numberMonitors);
-      await this.updateMonitorsList();
+      this.updateMonitorsList();
     } else {
       (event.target as HTMLSelectElement).value = (oldType != null ? oldType.id : -1).toString();
     }
@@ -79,10 +79,8 @@ export class CreateActivityComponent {
       }
     }
     else if (this.activityTypeNew != null) {//quita de la lista los que sobran
-      alert("Los que tiene que haber"+(this.activityTypeNew.numberMonitors-1))
-      alert("Los que tiene"+(this.monitorsNew.length-1))
       this.monitorsNew = this.monitorsNew.slice(0, this.activityTypeNew.numberMonitors);
-      alert("Los que tiene"+(this.monitorsNew.length-1))
+
     }
   }
 
@@ -249,5 +247,10 @@ export class CreateActivityComponent {
       this.closeOverlay();
     }
     
+  }
+
+  isAtList(id: number) {
+    if ( this.monitorsNew.some(monitor => monitor!=null && monitor.id === id))return "#FF9A86"
+    else return "#7CDC86"
   }
 }

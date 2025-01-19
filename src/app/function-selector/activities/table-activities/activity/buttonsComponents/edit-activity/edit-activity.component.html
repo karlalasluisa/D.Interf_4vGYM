@@ -34,12 +34,12 @@
 
 
                 <!-- Monitor -->
-                <div id="monitorSelect" *ngIf="indexAuxiliar != -1 && monitorAuxiliar != null" class="mb-3">
+                <div id="monitorSelect" *ngIf="indexAuxiliar != -1 && monitorView != null" class="mb-3">
                     <label for="monitor" class="form-label">Monitor</label>
                     <select class="form-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
-                        <option [value]="-1" selected disabled>Default:{{ monitorAuxiliar.name }}
+                        <option [value]="-1" selected disabled>Default:{{ monitorView.name }}
                         </option>
-                        <option *ngFor="let monitor of monitors" [value]="monitor.id">
+                        <option *ngFor="let monitor of monitors" [value]="monitor.id" [ngStyle]="{'background-color': isAtList(monitor.id)}">
                             {{ monitor.name }}
                         </option>
                     </select>
