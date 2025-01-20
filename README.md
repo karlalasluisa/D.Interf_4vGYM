@@ -57,6 +57,9 @@ An Angular-based application designed to manage monitors and activities in a gym
 
 ---
 
+## About the paths structure
+We have structured the folders so that components are always placed within the components that call them (similar to how they are used in HTML). This way, we maintain a clear structure regarding the relationships between components and services.
+
 ## Setup and Installation
 
 ### Angular Project Setup
