@@ -12,6 +12,7 @@ An Angular-based application designed to manage monitors and activities in a gym
     - [Activities Management](#activities-management)
     - [Monitors Management](#monitors-management)
     - [Shared Components](#shared-components)
+    - [About the Folder structure](#about-the-folder-structure) 
 2. [Technologies Used](#technologies-used)
 3. [Setup and Installation](#setup-and-installation)
     - [Angular Project Setup](#angular-project-setup)
@@ -57,7 +58,8 @@ An Angular-based application designed to manage monitors and activities in a gym
 
 ---
 
-## About the paths structure
+## About the Folder structure
+
 We have structured the folders so that components are always placed within the components that call them (similar to how they are used in HTML). This way, we maintain a clear structure regarding the relationships between components and services.
 
 ## Setup and Installation
