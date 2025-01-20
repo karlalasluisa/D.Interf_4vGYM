@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/internal/Observable';
 import { ModalService } from '../../../../Services/modal.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-carousel',
-  imports: [MonitorComponent, CommonModule, MatProgressSpinnerModule],
+  imports: [MonitorComponent, CommonModule, MatProgressSpinnerModule, FormsModule],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.scss',
   standalone: true
@@ -17,8 +18,11 @@ export class CarouselComponent {
   monitors: Monitor[] = [];
   currentIndex: number = 0;
   itemsPerPage: number = 3;
-  showModal = false;
   isLoading: boolean = false;
+
+  //Para la barra buscar
+  filteredMonitors: Monitor[] = []; // Monitores después de filtrar
+  searchQuery: string = ''; // Texto ingresado para la búsqueda
 
 
   listMonitorsAsync$!: Observable<Monitor[]>;
@@ -43,10 +47,22 @@ export class CarouselComponent {
     this.listMonitorsAsync$.subscribe((data) => {
       this.monitors = data; // Carga los datos en el arreglo local
 
+      this.filteredMonitors = [...this.monitors]; // al inicio sin filtrar
+
       this.isLoading = false; // Oculta el spinner
     });
     })
     
+  }
+  // Filtrar monitores por el texto ingresado
+  filterMonitors(): void {
+    const query = this.searchQuery.toLowerCase();
+    
+    console.log('Filtrando monitores con query:', query); 
+    this.filteredMonitors = this.monitors.filter((monitor) =>
+      monitor.name.toLowerCase().includes(query)
+    );
+    this.currentIndex = 0; //Reinicio el índice del carrusel al inicio
   }
 
   // Editar monitor
