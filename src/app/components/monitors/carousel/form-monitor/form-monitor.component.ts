@@ -8,13 +8,13 @@ import { CommonModule } from '@angular/common';
 
 
 @Component({
-  selector: 'app-form-monitor-edit',
+  selector: 'app-form-monitor',
   imports: [FormsModule, ReactiveFormsModule,CommonModule],
-  templateUrl: './form-monitor-edit.component.html',
-  styleUrl: './form-monitor-edit.component.scss',
+  templateUrl: './form-monitor.component.html',
+  styleUrl: './form-monitor.component.scss',
   standalone: true
 })
-export class FormMonitorEditComponent {
+export class FormMonitorComponent {
   @Input() monitor!: Monitor; // Recibe el monitor a editar
   @Output() cancel = new EventEmitter<void>(); // Emite cuando se cancela
   isCreating: boolean = false;
@@ -49,19 +49,27 @@ export class FormMonitorEditComponent {
       }
     });
   }
+
   saveMonitor() {
+
     if (this.monitorForm.valid) {
       const monitorData = this.monitorForm.value as Monitor;
+
+      // Si estamos editando, agregar el ID manualmente
+      if (!this.isCreating && this.monitor && this.monitor.id) {
+        monitorData.id = this.monitor.id;
+      }
 
       if (this.isCreating) {
         this.monitorsService.addMonitor(monitorData).subscribe((addMonitor) => {
           this.modalService.notifyMonitorUpdated(addMonitor);
           this.modalService.closeModal();
         });
-      } else {
+      } else {    
         this.monitorsService.updateMonitor(monitorData).subscribe((updatedMonitor) => {
           this.modalService.notifyMonitorUpdated(updatedMonitor);
           this.modalService.closeModal();
+          
         });
       }
     } else {

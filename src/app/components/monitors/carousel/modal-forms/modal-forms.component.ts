@@ -2,10 +2,11 @@ import { Component, Input, Output, EventEmitter, ElementRef, ViewChild, ChangeDe
 import { ModalService } from '../../../../../Services/modal.service';
 import { Monitor } from '../../../../../models/Monitor';
 import { CommonModule } from '@angular/common';
-import { FormMonitorEditComponent } from '../form-monitor-edit/form-monitor-edit.component';
+import { FormMonitorComponent } from '../form-monitor/form-monitor.component';
+
 @Component({
   selector: 'app-modal-forms',
-  imports: [CommonModule, FormMonitorEditComponent],
+  imports: [CommonModule, FormMonitorComponent],
   templateUrl: './modal-forms.component.html',
   styleUrl: './modal-forms.component.scss',
   standalone: true

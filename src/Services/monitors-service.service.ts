@@ -22,6 +22,7 @@ export class MonitorsServiceService {
       )
     );
   }
+
   addMonitor(monitor: Monitor): Observable<Monitor> {
     return this.http.post<Monitor>('http://localhost:8000/monitors', monitor);
   }   
@@ -34,17 +35,5 @@ export class MonitorsServiceService {
     return this.http.put<Monitor>('http://localhost:8000/monitors/' + monitor.id, monitor);
   }
 
-  //  Es mejor que el servicio devuelva un observable
 
-  // addMonitor(monitor: Monitor) {
-  //   return this.http.post<Monitor>('http://localhost:8000/monitors', monitor).subscribe();
-  // }
-
-  // deleteMonitor(id: number) {
-  //   return this.http.delete<Monitor>('http://localhost:8000/monitors/' + id).subscribe();
-  // }
-
-  // updateMonitor(monitor: Monitor) {
-  //   return this.http.put<Monitor>('http://localhost:8000/monitors/' + monitor.id, monitor).subscribe();
-  // }
 }

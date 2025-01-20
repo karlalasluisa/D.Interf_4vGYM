@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <!-- creo un monitor vacío porque si no me da error, el form edited no acepta null-->
-                <app-form-monitor-edit [monitor]="monitorEdited || { id: 0, name: '', email: '', phone: '', photo: '' }"></app-form-monitor-edit>
+                <app-form-monitor [monitor]="monitorEdited || { id: 0, name: '', email: '', phone: '', photo: '' }"></app-form-monitor>
             </div>
         </div>
     </div>
