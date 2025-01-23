@@ -30,7 +30,7 @@ export class EditActivityComponent {
   monitorView: Monitor | null = null;
 
 
-  constructor(private cdr: ChangeDetectorRef,private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { 
+  constructor(private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) { 
 
     this.activitiesService.activityChanges$.subscribe(data => this.activity = data);
     if (this.activity != null){
@@ -191,8 +191,7 @@ export class EditActivityComponent {
       this.activity.monitors = this.activityOld.monitors  
       this.activity.activityType = this.activityOld.activityType
     }
-    alert(this.activityOld.activityType.name);
-    this.activitiesService.updateActivity(this.activityOld)
+    //this.activitiesService.updateActivity(this.activityOld)
     this.windowService.hide();
     this.closeOverlay();
   }

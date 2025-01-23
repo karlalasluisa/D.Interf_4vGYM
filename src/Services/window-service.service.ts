@@ -8,6 +8,17 @@ import { Subject } from 'rxjs/internal/Subject';
 export class WindowServiceService {//este servicio nos permite mostrar y ocultar la ventana de edicion o creacion de actividades 
   //además facilitamos la comunicacion con el componente padre
 
+  private saved = new Subject<boolean>(); //para mostrar y ocultar la ventana
+  saved$ = this.saved.asObservable();
+
+  setSaved() {
+    this.saved.next(true);
+  }
+
+  setNotSaved() {
+    this.saved.next(false);
+  }
+
   private display = new Subject<boolean>(); //para mostrar y ocultar la ventana
   display$ = this.display.asObservable();
 

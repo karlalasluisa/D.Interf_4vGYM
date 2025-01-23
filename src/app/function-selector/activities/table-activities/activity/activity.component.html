@@ -1,12 +1,11 @@
-
 <div class="" id="contenedorActividad">
     <div class="row h-100">
         @if (activity == null){
-            <div class="col-10 bg-success">
-                <h1 class="text-center d-flex justify-content-center align-items-center h-100 text-light">
-                    FREE
-                </h1>
-            </div>
+        <div class="col-10 bg-success">
+            <h1 class="text-center d-flex justify-content-center align-items-center h-100 text-light">
+                FREE
+            </h1>
+        </div>
         <div class="col-2 bg-success">
             <a href="" class="btnCreateActivity" (click)="openOverlay($event, 'create')">
                 <svg width="40%" height="45%" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,7 +29,7 @@
             <div id="contenedorActividad">
                 <div id="scrollableDiv">
                     <div *ngFor="let monitor of activity.monitors">
-                        <app-monitor-simple [monitor]="monitor" [activity]="activity" width="100%" height="100%"/>
+                        <app-monitor-simple [monitor]="monitor" [activity]="activity" width="100%" height="100%" />
                     </div>
                 </div>
             </div>
@@ -46,7 +45,8 @@
                         fill="#D25B5B" />
                 </svg>
             </a>
-            <a href="" id="{{this.activity.id}}" class="btnEdit" data-toggle="modal" data-target="#editActivity{{this.activity}}" (click)="openOverlay($event, 'edit')">
+            <a href="" id="{{this.activity.id}}" class="btnEdit" data-toggle="modal"
+                data-target="#editActivity{{this.activity}}" (click)="openOverlay($event, 'edit')">
                 <svg width="60%" height="60%" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M5 29.1V34.1667C5 34.6333 5.36667 35 5.83333 35H10.9C11.1167 35 11.3333 34.9167 11.4833 34.75L29.6833 16.5667L23.4333 10.3167L5.25 28.5C5.08333 28.6667 5 28.8667 5 29.1ZM34.5167 11.7333C34.6712 11.5791 34.7937 11.396 34.8774 11.1944C34.961 10.9928 35.0041 10.7766 35.0041 10.5583C35.0041 10.3401 34.961 10.1239 34.8774 9.92229C34.7937 9.72067 34.6712 9.53752 34.5167 9.38333L30.6167 5.48333C30.4625 5.32883 30.2793 5.20625 30.0777 5.12261C29.8761 5.03898 29.6599 4.99593 29.4417 4.99593C29.2234 4.99593 29.0072 5.03898 28.8056 5.12261C28.604 5.20625 28.4209 5.32883 28.2667 5.48333L25.2167 8.53333L31.4667 14.7833L34.5167 11.7333Z"

@@ -13,9 +13,9 @@
     </div>
   </div>
 
-  <app-edit-activity *ngIf="isOverlayVisible && button == 'edit'"></app-edit-activity>
+  <app-edit-activity  *ngIf="isOverlayVisible && button == 'edit'"></app-edit-activity>
 
-  <app-create-activity *ngIf="isOverlayVisible && button == 'create'"></app-create-activity>
+  <app-create-activity (test)="fetchActivities()" *ngIf="isOverlayVisible && button == 'create'"></app-create-activity>
 
 <div class="row">
     <div class="col-2">

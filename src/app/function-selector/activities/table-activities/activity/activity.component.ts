@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { WindowServiceService } from '../../../../../Services/window-service.service';
 import { AcivityServiceService } from '../../../../../Services/acivity-service.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import _ from 'lodash';
 
 
@@ -25,33 +25,53 @@ export class ActivityComponent {
 
   constructor(private windowService: WindowServiceService, private activityService: AcivityServiceService) {
 
-   }
+  }
 
   openOverlay($event: Event, button: string) {
+    // Cancelar la suscripción previa si existe
+    if (this.activitySubscription) {
+      this.activitySubscription.unsubscribe();
+    }
+  
     $event.preventDefault();
-    this.windowService.show(); //notifica para que se abra la pantallade edi/cre
-    if (this.activity != null)//si hay actividad es editar
-      this.windowService.setButton(button); //notifica para que se abra la pantalla según el botón clicado para que en el componente padre sepa que pantalla abrir
-    else this.windowService.setButton('create');
-    if (button=='create'){ //si se abre la pantalla de creacion se le pasa el index para saber que hora del día se ha seleccionado
-      this.windowService.setIndex(this.index);
+
+   
+
+    // Mostrar la ventana correspondiente
+    this.windowService.show();
+    this.windowService.setButton(button);
+  
+    // Lógica para creación
+    if (button === 'create') {
+      this.activity = null;
+      this.activityService.notifyActivityChange(this.activity); // Notificar la actividad actual
+
+      this.windowService.setIndex(this.index); // Indicar el índice seleccionado
     }
-    if (this.activity != null && button=='edit')//si se abre la pantalla de edicion se le pasa la actividad actual
-    {
-      this.activityService.notifyActivityChange(this.activity);
+  
+    // // Lógica para edición
+    if (this.activity != null && button === 'edit') 
+      {
+      this.activityService.notifyActivityChange(this.activity); // Notificar la actividad actual
     }
-      
-    
+  
+    // Actualizar índice auxiliar
+  
     this.windowService.index$.subscribe(data => this.indexAuxiliar = data);
 
-    if (this.indexAuxiliar != -1 && this.indexAuxiliar == this.index) {
-      var act: Activity | null = null;
-      this.activitySubscription=this.activityService.activityChanges$.subscribe((activity) => act = activity);
-      this.activitySubscription.unsubscribe();
-      this.activity = _.cloneDeep(act);
-      /*this.activityService.notifyActivityChange(act)
-      this.activity = act;*/
+  
+    if (this.indexAuxiliar !== -1 && this.indexAuxiliar === this.index) {
+      let act: Activity | null = null;
+  
+      // Suscribirse solo una vez a `activityChanges$`
+      this.activityService.activityChanges$
+        .pipe(take(1)) // Escucha solo la primera emisión
+        .subscribe(activity => {
+          act = activity;
+          this.activity = _.cloneDeep(act); // Actualizar la actividad con la nueva
+        });
     }
+
 
   }
 
@@ -60,7 +80,7 @@ export class ActivityComponent {
     $event.preventDefault();
 
     if (window.confirm(`¿Estas segur@ que quieres borrar la actividad?`)) {
-      
+
       if (this.activity != null) {
         this.activityService.deleteActivity(this.activity?.id)
         this.activity = null;
@@ -86,6 +106,6 @@ export class ActivityComponent {
       return "https://media.istockphoto.com/id/1322158059/es/foto/mancuerna-botella-de-agua-toalla-en-el-banco-en-el-gimnasio.jpg?s=612x612&w=0&k=20&c=6wc4q5s37IHzQh-2uAaaXROj2dSNWYpwFz6oHRQYKsQ="
     }
   }
-  
+
 
 }

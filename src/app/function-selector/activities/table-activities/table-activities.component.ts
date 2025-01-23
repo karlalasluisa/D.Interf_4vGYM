@@ -62,6 +62,7 @@ export class TableActivitiesComponent implements OnChanges{
   }
 
   fetchActivities(): void {// Actualizar las actividades
+    alert("takjata")
     this.isLoading = true; // Activar la bandera de carga --> He pensado en esta opción como una solución 
                            // al tiempo que tarda en hacer la petición get de actividades y de esta manera 
                            // no hay errores de sobre carga de peticiones o no parece que no funcione

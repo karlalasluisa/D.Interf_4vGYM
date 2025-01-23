@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { Monitor } from '../../../../../../../models/Monitor';
 import { Activity } from '../../../../../../../models/Activity';
 import { TypeActivity } from '../../../../../../../models/TypeActivity';
@@ -59,7 +59,7 @@ export class CreateActivityComponent {
 
   async onActivityTypeChange(event: Event) {
     const oldType = this.activityTypeNew;
-    if (this.activityTypeNew == null || window.confirm("¿Quieres cambiar de tipo de actividad? se elminirán monitores que sobren de la lista")) {
+    if (this.activityTypeNew == null || window.confirm("Do you want to change your type of activity? Monitors that are left over from the list will be removed")) {
       const types = await firstValueFrom(this.typeService.getTypes());
       this.activityTypeNew = types.find((type) => type != undefined && type.id === parseInt((event.target as HTMLSelectElement).value)) || null;
       if (this.activityTypeNew != null) this.setRange(this.activityTypeNew.numberMonitors);
@@ -235,6 +235,9 @@ export class CreateActivityComponent {
     else if (this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) alert("the monitor is already assigned");
   }
 
+  @Output() test = new EventEmitter<void>(); // Define un EventEmitter
+
+
   onSubmit($event: Event) {
     $event.preventDefault();
     this.saveTheLast();
@@ -242,9 +245,11 @@ export class CreateActivityComponent {
 
       //guarda los datos y los updatea
       this.activitiesService.addActivity(this.activity);
-      this.activitiesService.notifyActivityChange(this.activity);
+      this.windowService.setSaved();
+      // this.activitiesService.notifyActivityChange(this.activity);
       this.windowService.hide();
       this.closeOverlay();
+      this.test.emit();
     }
     
   }

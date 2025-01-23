@@ -6,21 +6,23 @@ import { map } from 'rxjs/internal/operators/map';
 import { HttpClient } from '@angular/common/http';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { tap } from 'rxjs/internal/operators/tap';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AcivityServiceService {
 
-  public isSaved: boolean = false;
-  private activityChangeSubject: ReplaySubject<Activity | null> = new ReplaySubject(1);//objeto para notificar cambios y facilitar al eliminar/crear/editar acividades
-  activityChanges$: Observable<Activity | null> = this.activityChangeSubject?.asObservable();
+  private activityChangesSubject = new BehaviorSubject<Activity | null>(null);
+  activityChanges$ = this.activityChangesSubject.asObservable();
+
+  notifyActivityChange(activity: Activity | null) {
+    this.activityChangesSubject.next(activity);
+  }
 
   constructor(private http: HttpClient) { }
 
-  notifyActivityChange(activity: Activity | null): void {
-    this.activityChangeSubject.next(activity);
-  }
+ 
 
   getActivities(): Observable<Activity[]> {
     var a = this.http.get<Activity[]>('http://localhost:8000/activities');
@@ -39,13 +41,15 @@ export class AcivityServiceService {
 
   getActivityById(id: number) {//funcion para obtener actividad por id
 
-    return this.getActivities().pipe(
+    const a = this.getActivities().pipe(
       tap((data) => console.log(data)), // Imprime los datos para verificar
       map((data) =>
         data.filter((activity) => activity.id === Number(id))
       )
 
     );
+    this.activityChangesSubject.next(this.activityChangesSubject.value);
+    return a;
   }
 
 
