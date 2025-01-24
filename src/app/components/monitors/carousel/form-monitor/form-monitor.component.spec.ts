@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormMonitorEditComponent } from './form-monitor-edit.component';
+import { FormMonitorEditComponent } from './form-monitor.component';
 
 describe('FormMonitorEditComponent', () => {
   let component: FormMonitorEditComponent;

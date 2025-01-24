@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { ActivitiesComponent } from './function-selector/activities/activities.component';
-import { MonitorsComponent } from './function-selector/monitors/monitors.component';
+import { ActivitiesComponent } from './components/activities/activities.component';
+import { MonitorsComponent } from './components/monitors/monitors.component';
 
 export const routes: Routes = [
     { path: 'information-activities', component: ActivitiesComponent },

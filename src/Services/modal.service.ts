@@ -15,6 +15,15 @@ export class ModalService {
 
   private isCreating = new BehaviorSubject<boolean>(false);
   isCreating$ = this.isCreating.asObservable();
+  
+
+  private monitorDeleted = new BehaviorSubject<number | null>(null);
+  monitorDeleted$ = this.monitorDeleted.asObservable();
+
+  deleteMonitor(monitor: Monitor): void {
+    this.monitorDeleted.next(monitor.id);
+  }
+
 
   editMonitor(monitor: Monitor): void {
     this.monitorSelected.next(monitor);

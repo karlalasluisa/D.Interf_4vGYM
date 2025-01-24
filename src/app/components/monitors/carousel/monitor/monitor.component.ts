@@ -14,30 +14,17 @@ export class MonitorComponent {
 
   @Input() monitor!: Monitor;
   @Output() edit = new EventEmitter<Monitor>();
+  @Output() delete = new EventEmitter<Monitor>();
 
 
   editMonitor(event: Event): void {
     event.preventDefault();
     this.edit.emit(this.monitor);
-    alert(this.monitor == null);
   }
 
-  //isModalOpen = false;
+  deleteMonitor(event: Event): void {
+    event.preventDefault();
+    this.delete.emit(this.monitor);
+  }
 
-  // openModal($event: Event) {
-  //   $event.preventDefault();
-  //   alert(this.monitor == null);
-  //   this.modalService.openEditModal(this.monitor);
-
-  // }
-
-
-  // closeModal() {
-  //   this.isModalOpen = false;
-  // }
-
-  // saveMonitor(updatedMonitor: Monitor) {
-  //   this.monitor = { ...updatedMonitor };
-  //   this.closeModal();
-  // }
 }

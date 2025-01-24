@@ -1,5 +1,5 @@
 <div class="container mt-4 ">
-    <form (ngSubmit)="saveMonitor()">
+    <form [formGroup]="monitorForm" (ngSubmit)="saveMonitor()"> <!-- FormGroup -->
         <div class="d-flex justify-content-center ">
             <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_6_10445)">
@@ -22,16 +22,31 @@
             </div>
         </div>
         <div class="my-3">
-            <input type="text" class="form-control bg-secondary-subtle" [(ngModel)]="monitor.name" name="name"
-                placeholder="Nombre">
+            <input type="text" class="form-control bg-secondary-subtle" placeholder="Nombre" formControlName="name">
+            <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert alert-danger">
+                <div *ngIf="name?.hasError('required')">El nombre es requerido.</div>
+                <div *ngIf="name?.hasError('minlength')">El nombre debe tener al menos 3 caracteres.</div>
+            </div>
         </div>
         <div class="mb-3">
-            <input type="email" class="form-control bg-secondary-subtle" [(ngModel)]="monitor.email" name="email"
-                placeholder="Email">
+            <input type="email" class="form-control bg-secondary-subtle" formControlName="email" placeholder="Email">
+            <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
+                <div *ngIf="email?.hasError('required')">El email es requerido.</div>
+                <div *ngIf="email?.hasError('email')">El email no es válido.</div>
+            </div>
         </div>
         <div class="mb-3">
-            <input type="text" class="form-control bg-secondary-subtle" [(ngModel)]="monitor.phone" name="phone"
-                placeholder="Teléfono">
+            <input type="text" class="form-control bg-secondary-subtle" formControlName="phone" placeholder="Teléfono">
+            <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="alert alert-danger">
+                <div *ngIf="phone?.hasError('required')">El teléfono es requerido.</div>
+                <div *ngIf="phone?.hasError('pattern')">El teléfono no es valido.</div>
+            </div>
+        </div>
+        <div>
+            <input type="text" class="form-control bg-secondary-subtle" formControlName="photo" placeholder="Foto">
+            <div *ngIf="photo?.invalid && (photo?.dirty || photo?.touched)" class="alert alert-danger">
+                <div *ngIf="photo?.hasError('required')">La URL de la foto es obligatoria</div>
+            </div>
         </div>
         <div class="d-flex justify-content-between mt-4 ">
             <button type="submit" class="btn btn-danger">ACEPTAR</button>

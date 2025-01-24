@@ -1,0 +1,25 @@
+.active-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    width: 0;
+    background-color: transparent;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.active-bar.active {
+    width: 100%;
+    background-color: #D25B5B;
+}
+
+
+.nav-link i {
+    line-height: 1;
+    /* Ajusta la altura de línea del icono */
+}
+
+.nav-link span {
+    display: inline-block; /* para que el texto esté en línea con el icono */
+    vertical-align: middle;
+}
