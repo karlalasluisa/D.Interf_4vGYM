@@ -73,7 +73,7 @@ export class FormMonitorComponent {
         });
       }
     } else {
-      alert('El formulario contiene errores. Por favor, revisa los campos.');
+      alert('The form contains errors. Please review the fields.');
     }
   }
 

@@ -73,7 +73,7 @@
 /* Estilo del tooltip */
 .tooltip {
   position: absolute;
-  top: -30px; /* Ajusta según dónde quieras el tooltip */
+  top: +80px; /* Ajusta según dónde quieras el tooltip */
   left: 50%;
   transform: translateX(-50%);
   background-color: #333;
@@ -92,4 +92,46 @@
 .select-container:hover .tooltip {
   opacity: 1;
   visibility: visible;
+}
+
+.custom-select {
+  position: relative;
+  display: block;
+  width: 100%;
+  z-index: 1000;
+}
+
+.custom-select select {
+  /* Forzar el select a desplegarse correctamente */
+  appearance: none;
+  -webkit-appearance: none; /* Compatibilidad con Safari */
+  -moz-appearance: none; /* Compatibilidad con Firefox */
+  position: relative;
+  z-index: 1000;
+}
+
+.custom-select:focus-within {
+  overflow: visible;
+}
+
+.custom-select select:focus {
+  outline: none;
+}
+
+/* Opciones desplegables */
+.custom-select option {
+  padding: 10px;
+}
+
+.custom-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-select::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 4px;
+}
+
+.custom-select::-webkit-scrollbar-thumb:hover {
+  background: #a6a6a6;
 }

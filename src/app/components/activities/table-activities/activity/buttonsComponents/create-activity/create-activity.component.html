@@ -33,7 +33,7 @@
                 <!-- Monitor -->
                 <div id="monitorSelect" *ngIf="indexAuxiliar != -1" class="mb-3">
                     <label for="monitor" class="form-label">Monitor</label>
-                    <select class="form-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
+                    <select class="form-select custom-select" id="monitor" (change)="onMonitorChange($event)" name="monitor">
                         <ng-container *ngIf="viewMonitor != null; else noMonitor">
                             <option [value]="viewMonitor.id" selected disabled>
                                 Default: {{ viewMonitor.name }}
@@ -44,12 +44,15 @@
                                 Select an option
                             </option>
                         </ng-template>
-
-                        <option *ngFor="let monitor of monitors" [value]="monitor.id" [ngStyle]="{'background-color': isAtList(monitor.id)}">
+                
+                        <option *ngFor="let monitor of monitors" 
+                            [value]="monitor.id" 
+                            [ngStyle]="{'background-color': isAtList(monitor.id)}">
                             {{ monitor.name }}
                         </option>
                     </select>
                 </div>
+                
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-between">

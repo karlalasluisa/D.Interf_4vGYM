@@ -19,6 +19,8 @@ import _ from 'lodash';
   styleUrl: './create-activity.component.scss'
 })
 export class CreateActivityComponent {
+  @Output() guardado = new EventEmitter<void>(); // Define un EventEmitter que se emite cuando se guarda la actividad
+
   activity!: Activity;
   date!: Date;
 
@@ -44,11 +46,10 @@ export class CreateActivityComponent {
 
   constructor(private dateService: DateServiceService, private cdr: ChangeDetectorRef, private activitiesService: AcivityServiceService, private typeService: AcivityTypeServiceService, private monitorService: MonitorsServiceService, private windowService: WindowServiceService) {
     this.windowService.index$.subscribe(data => this.indexHour = data); //recibe el index de la hora de la actividad
-    this.setTypes(); // Activamos la pantalla de carga
+    this.setTypes(); // Generamos la lista de tipos
 
-    //generamos todo ya que ya esta seleccionado:
     this.getMonitors();
-    this.dateService.dateChanges$.subscribe((newDate: Date) => this.date = newDate);
+    this.dateService.dateChanges$.subscribe((newDate: Date) => this.date = newDate); // para saber que dia se esta creando la actiidad
   }
 
 
@@ -57,7 +58,7 @@ export class CreateActivityComponent {
   //CONTROL SOBRE EL CBO DE TIPOS Y ACTIVITYTYPES ////////////////////////////////////////////////////////
 
 
-  async onActivityTypeChange(event: Event) {
+  async onActivityTypeChange(event: Event) { // cuando cambia de tipo de actividad, si habia una seleccionada pregunta si estas seguro y lo guarda actualizando lo que se necesita
     const oldType = this.activityTypeNew;
     if (this.activityTypeNew == null || window.confirm("Do you want to change your type of activity? Monitors that are left over from the list will be removed")) {
       const types = await firstValueFrom(this.typeService.getTypes());
@@ -71,7 +72,9 @@ export class CreateActivityComponent {
 
 
   //acondicionadores
-  updateMonitorsList() {
+  updateMonitorsList() { //actualiza la lista de monitores:
+                         //Si sobran monitores se eliminan
+                         //Si faltan monitores se ponen a null
     if (this.activityTypeNew != null && this.activityTypeNew?.numberMonitors > this.monitorsNew.length) {
       const empty = this.activityTypeNew?.numberMonitors - this.monitorsNew.length // los que faltan
       for (let i = 0; i < empty; i++) {
@@ -84,7 +87,7 @@ export class CreateActivityComponent {
     }
   }
 
-  setRange(n: number) {
+  setRange(n: number) { //genera el array de posiciones
     this.rangeNumers = [];
     for (let i = 0; i < n; i++) {
       this.rangeNumers.push(i);
@@ -113,9 +116,10 @@ export class CreateActivityComponent {
 
   //auxiliar monitor tiene que coger valor en cuanto cambias o cambias de index
 
-  onMonitorIndexChange(event: Event) {
-    const selectElement = document.getElementById('monitor') as HTMLSelectElement;
+  onMonitorIndexChange(event: Event) { // si cambia de index de monitor:
+    const selectElement = document.getElementById('monitor') as HTMLSelectElement; //el select de monitores (html)
 
+    //Si el index es -1 es que se ha cambiado de monitor y se desea guardar
     if (this.indexAuxiliar != -1 &&  this.monitorAuxiliar != null && (this.monitorsNew[this.indexAuxiliar] == null || this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) && window.confirm(`Do you want to save the monitor ${this.monitorAuxiliar.name} in the position ${this.indexAuxiliar + 1}?`)) {
       const actualMonitor = _.cloneDeep(this.monitorsNew[this.indexAuxiliar]);
       if (this.containsIdMonitor(this.monitorAuxiliar.id) && actualMonitor?.id != this.monitorAuxiliar.id) {
@@ -131,19 +135,19 @@ export class CreateActivityComponent {
     this.monitorAuxiliar = this.monitorsNew[this.indexAuxiliar];
     
     this.viewMonitor = this.monitorsNew[this.indexAuxiliar];
-    if (!this.viewMonitor) selectElement.value = "-1";
+    if (!this.viewMonitor) selectElement.value = "-1"; //para que seleccione el default (o el monitor guardado o "select a monitor")
   }
 
 
 
-  containsIdMonitor(id: number) {
+  containsIdMonitor(id: number) { //para ver si el monitor ya esta en la actividad
     return this.monitorsNew.some(monitor => monitor != null && monitor.id === id);
   }
 
   //CONTROL SOBRE EL CBO DE  MONITORES ///////////////////////////////////////////////////////////////////////////////
 
 
-  async onMonitorChange(event: Event) {
+  async onMonitorChange(event: Event) {//cuando cambias de monitor selecciionado recoge el monitor el el auxiliar
     this.monitorService.getMonitorById(parseInt((event.target as HTMLSelectElement).value)).subscribe(data => {
       this.monitorAuxiliar = data[0];
 
@@ -151,17 +155,17 @@ export class CreateActivityComponent {
     
   }
 
-  closeOverlay() {
+  closeOverlay() { //para cerrar el overlay
     this.windowService.clearButton();
   }
 
-  onCancel($event: Event) {
+  onCancel($event: Event) { //para cancelar la creación
     $event.preventDefault();
     this.windowService.hide();
     this.closeOverlay();
   }
 
-  getDates(){
+  getDates(){ //según el index de la hora devuelve la fecha
     var dateOut: Date=this.date;
     switch(this.indexHour){
       case 1:
@@ -181,7 +185,7 @@ export class CreateActivityComponent {
     return dateOut
   }
 
-  isValidActivity(){
+  isValidActivity(){ //valida la actividad y recoge los errores para sacarlos
     this.message = "";
     if (this.activityTypeNew==null){
       this.message+="You must asign a type of activity";
@@ -206,16 +210,16 @@ export class CreateActivityComponent {
     }
     this.isValid = this.message == "";
     setTimeout(() => {
-      this.isValid = true;
+      this.isValid = true;    //cuando aparece la alerta, despues de 6 segundos se quita
     }, 6000);
-    return this.message == "";
+    return this.message == ""; //devuelve un booleano que dice si es válida
   }
 
-  closeAlert() {
+  closeAlert() { //cierra los alert
     this.isValid = true;
   }
 
-  assambleActivity() {
+  assambleActivity() { // con todas las variables montadas, monta la actividad
     if (this.isValidActivity()){
       var startDate: Date;
       startDate = this.getDates();
@@ -229,16 +233,16 @@ export class CreateActivityComponent {
     return false
   }
 
-  saveTheLast(){
+  saveTheLast(){ // si el monitor no esta en la actividad y desea guardarlo lo guarda
     if (this.monitorAuxiliar != null && this.indexAuxiliar != -1 && !this.containsIdMonitor(this.monitorAuxiliar.id) && this.monitorAuxiliar.id != this.monitorsNew[this.indexAuxiliar]?.id && window.confirm("Do you want to save the monitor" + this.monitorAuxiliar.name +" at position "+ (this.indexAuxiliar + 1) + "?")) 
       this.monitorsNew[this.indexAuxiliar]=this.monitorAuxiliar; //si el monitor no esta en la actividad y desea guardarlo lo guarda
     else if (this.monitorAuxiliar?.id != this.monitorsNew[this.indexAuxiliar]?.id) alert("the monitor is already assigned");
   }
 
-  @Output() test = new EventEmitter<void>(); // Define un EventEmitter
+  
 
 
-  onSubmit($event: Event) {
+  onSubmit($event: Event) {// cuando envíes la actividad
     $event.preventDefault();
     this.saveTheLast();
     if (this.assambleActivity()){
@@ -249,12 +253,12 @@ export class CreateActivityComponent {
       // this.activitiesService.notifyActivityChange(this.activity);
       this.windowService.hide();
       this.closeOverlay();
-      this.test.emit();
+      this.guardado.emit();
     }
     
   }
 
-  isAtList(id: number) {
+  isAtList(id: number) { // funcion que da color al select de monitores (esta en la actividad ya (rojo) y cuando no esta (verde))
     if ( this.monitorsNew.some(monitor => monitor!=null && monitor.id === id))return "#FF9A86"
     else return "#7CDC86"
   }
