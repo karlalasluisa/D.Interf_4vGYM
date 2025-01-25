@@ -166,3 +166,41 @@ This functionality enhances the use of additional monitor properties.
 We assumed that **monitor cards include their photos**. To ensure a better user experience:
 - If the monitor's image is valid (it opens and displays properly), it will appear on the card.
 - If the image is invalid or causes an error, a **default image** will be displayed instead.
+
+---
+## Component Diagram
+components
+├── activities
+│   ├── calendar
+│   ├── table-activities
+│   │   └── activity
+│   │       ├── monitor-simple
+│   │       └── buttonsComponents
+│   │           ├── create-activity
+│   │           └── edit-activity
+├── monitors
+│   ├── carousel
+│   │   ├── monitor
+│   │   ├── form-monitor
+│   │   └── modal-forms
+
+
+## Task Management
+Para organizar y dar seguimiento a las tareas de este proyecto, utilizamos el sistema de **Kanban** de GitHub. Este tablero nos permitió dividir el trabajo en diferentes etapas, como "Por Hacer", "En Proceso" y "Completado", asegurando un flujo de trabajo eficiente.
+
+### Herramientas utilizadas:
+- **Angular**: Para el desarrollo del frontend de la aplicación de gimnasio.
+- **Symfony**: Para construir la API que alimenta la aplicación.
+- **Bootstrap**: Incorporado en el diseño para asegurar una interfaz amigable y responsiva.
+
+El tablero Kanban nos ayudó a gestionar la implementación de características clave, como:
+1. Desarrollo de vistas y componentes en Angular.
+2. Integración de APIs para sincronizar el frontend y el backend.
+3. Diseño responsivo usando Bootstrap.
+
+## Authors
+- **Iker Ibero**: Desarrollo de frontend, backend y la integración con las APIs.  
+- **Karla Lasluisa**: Desarrollo de frontend, backend y la integración con las APIs.  
+
+Agradecemos tu interés en este proyecto. Si deseas colaborar, no dudes en enviar tus ideas o sugerencias a través de GitHub Issues o revisando nuestra [Guía de Contribución](CONTRIBUTING.md).
+
