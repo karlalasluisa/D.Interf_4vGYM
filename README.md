@@ -169,6 +169,8 @@ We assumed that **monitor cards include their photos**. To ensure a better user 
 
 ---
 ## Component Diagram
+
+```plaintext
 components
 ├── activities
 │   ├── calendar
@@ -184,6 +186,7 @@ components
 │   │   ├── form-monitor
 │   │   └── modal-forms
 
+```
 
 ## Task Management
 Para organizar y dar seguimiento a las tareas de este proyecto, utilizamos el sistema de **Kanban** de GitHub. Este tablero nos permitió dividir el trabajo en diferentes etapas, como "Por Hacer", "En Proceso" y "Completado", asegurando un flujo de trabajo eficiente.
@@ -200,7 +203,7 @@ El tablero Kanban nos ayudó a gestionar la implementación de características 
 
 ## Authors
 - **Iker Ibero**: Desarrollo de frontend, backend y la integración con las APIs.  
-- **Karla Lasluisa**: Desarrollo de frontend, backend y la integración con las APIs.  
+- **Karla Lasluisa**: Desarrollo de frontend, backend y la integración con las APIs.
+Muchas gracias por revisar nuestro proyecto!
 
-Agradecemos tu interés en este proyecto. Si deseas colaborar, no dudes en enviar tus ideas o sugerencias a través de GitHub Issues o revisando nuestra [Guía de Contribución](CONTRIBUTING.md).
 
