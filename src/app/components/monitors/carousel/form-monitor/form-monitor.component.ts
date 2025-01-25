@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Monitor } from '../../../../../models/Monitor';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule } from '@angular/forms';
 import { ModalService } from '../../../../../Services/modal.service';
 import { MonitorsServiceService } from '../../../../../Services/monitors-service.service';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms'; // Importar Reactive Forms
@@ -22,9 +22,12 @@ export class FormMonitorComponent {
   // Definir el formulario
   monitorForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
-    photo: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, this.customEmailValidator]),
+    phone: new FormControl('', [Validators.required, Validators.pattern(/^\d{9}$/)]),
+    photo: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/),
+    ]),
   });
 
   constructor(private modalService: ModalService, private monitorsService: MonitorsServiceService) { }
@@ -79,6 +82,13 @@ export class FormMonitorComponent {
 
   onCancel() {
     this.modalService.closeModal(); // Emitir evento de cancelación
+  }
+
+  // Validador personalizado para correo
+  customEmailValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const valid = emailRegex.test(control.value || '');
+    return valid ? null : { invalidEmail: true };
   }
   // Getters para el acceso en el template
   get name() {

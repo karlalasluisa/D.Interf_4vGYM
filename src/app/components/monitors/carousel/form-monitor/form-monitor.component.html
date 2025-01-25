@@ -23,29 +23,35 @@
         </div>
         <div class="my-3">
             <input type="text" class="form-control bg-secondary-subtle" placeholder="Nombre" formControlName="name">
-            <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert alert-danger">
+            <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert alert-danger p-2 my-2">
                 <div *ngIf="name?.hasError('required')">El nombre es requerido.</div>
                 <div *ngIf="name?.hasError('minlength')">El nombre debe tener al menos 3 caracteres.</div>
             </div>
         </div>
         <div class="mb-3">
             <input type="email" class="form-control bg-secondary-subtle" formControlName="email" placeholder="Email">
-            <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
-                <div *ngIf="email?.hasError('required')">El email es requerido.</div>
-                <div *ngIf="email?.hasError('email')">El email no es válido.</div>
+            <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger p-2 my-2">
+                <div *ngIf="email?.hasError('required'); else invalidEmailError">
+                    El email es requerido.
+                </div>
+                <ng-template #invalidEmailError>
+                    <div>El formato del correo no es válido.</div>
+                </ng-template>
             </div>
         </div>
+
         <div class="mb-3">
             <input type="text" class="form-control bg-secondary-subtle" formControlName="phone" placeholder="Teléfono">
-            <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="alert alert-danger">
+            <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="alert alert-danger p-2  my-2">
                 <div *ngIf="phone?.hasError('required')">El teléfono es requerido.</div>
-                <div *ngIf="phone?.hasError('pattern')">El teléfono no es valido.</div>
+                <div *ngIf="phone?.hasError('pattern')">El teléfono no es válido.</div>
             </div>
         </div>
         <div>
             <input type="text" class="form-control bg-secondary-subtle" formControlName="photo" placeholder="Foto">
-            <div *ngIf="photo?.invalid && (photo?.dirty || photo?.touched)" class="alert alert-danger">
+            <div *ngIf="photo?.invalid && (photo?.dirty || photo?.touched)" class="alert alert-danger p-2  my-2">
                 <div *ngIf="photo?.hasError('required')">La URL de la foto es obligatoria</div>
+                <div *ngIf="photo?.hasError('pattern')">La URL debe ser válida (png, jpg, jpeg, gif, svg).</div>
             </div>
         </div>
         <div class="d-flex justify-content-between mt-4 ">

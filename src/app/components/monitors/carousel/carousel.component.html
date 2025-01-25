@@ -74,7 +74,7 @@
         </div>
 
     
-        <a (click)="next()" class="custom-carousel-icon">
+        <a (click)="next()" class="custom-carousel-icon" [class.disabled]="currentIndex + itemsPerPage >= filteredMonitors.length">
             <svg width="60" height="60" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_6_10336)">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -87,7 +87,7 @@
                     </clipPath>
                 </defs>
             </svg>
-            <!-- <i class="bi bi-chevron-double-right"></i> -->
+
         </a>
     </div>
 
