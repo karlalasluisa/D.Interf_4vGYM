@@ -7,6 +7,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ModalService } from '../../../../Services/modal.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
+/**
+ * Componente que muestra un carrusel de monitores.
+ * Muestra una barra de búsqueda, un botón para agregar un monitor y un carrusel con los monitores.
+ * El carrusel permite moverse entre los monitores y editar o eliminar cada monitor.
+ */
 @Component({
   selector: 'app-carousel',
   imports: [MonitorComponent, CommonModule, MatProgressSpinnerModule, FormsModule],
@@ -16,8 +21,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class CarouselComponent {
   monitors: Monitor[] = [];
+  /**
+   * Indica el índice actual en el que se encuentra el carrusel.
+   * Se utiliza para mostrar los monitores correspondientes.
+   */
   currentIndex: number = 0;
+  /**
+   * Número de monitores que se muestran en el carrusel.
+   * Se utiliza para calcular el índice actual y mostrar los monitores correspondientes.
+   */
   itemsPerPage: number = 3;
+  /**
+   * Indica si se está cargando los monitores.
+   * Se utiliza para mostrar un spinner mientras se cargan los monitores.
+   */
   isLoading: boolean = false;
 
   //Para la barra buscar
@@ -41,6 +58,10 @@ export class CarouselComponent {
     });
   
   }
+  /**
+   * Carga los monitores desde el servicio.
+   * Se utiliza para inicializar el componente.
+   */
   loadMonitors(): void {
     this.modalService.monitorSelected$.subscribe(() => {
       this.listMonitorsAsync$ = this.monitorService.getMonitors();
@@ -54,11 +75,14 @@ export class CarouselComponent {
     })
     
   }
-  // Filtrar monitores por el texto ingresado
+  /**
+   * Filtra los monitores según el texto ingresado.
+   * Se utiliza para buscar monitores en el carrusel.
+   */
   filterMonitors(): void {
     const query = this.searchQuery.toLowerCase();
     
-    console.log('Filtrando monitores con query:', query); 
+    
     this.filteredMonitors = this.monitors.filter((monitor) =>
       monitor.name.toLowerCase().includes(query)
     );
@@ -71,9 +95,11 @@ export class CarouselComponent {
   }
   //Crear
   createMonitor(): void {
+    this.searchQuery = '';
+
     this.modalService.createMonitor();
   }
-  //Borrar monitor
+
   deleteMonitor(monitor: Monitor): void {
     if (confirm('¿Estas seguro de que deseas eliminar este monitor?')) { 
       this.monitorService.deleteMonitor(monitor.id).subscribe(() => {
@@ -97,3 +123,5 @@ export class CarouselComponent {
   }
 
 }
+
+ 

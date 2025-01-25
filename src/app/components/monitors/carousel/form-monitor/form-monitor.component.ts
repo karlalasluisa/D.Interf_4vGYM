@@ -6,14 +6,14 @@ import { MonitorsServiceService } from '../../../../../Services/monitors-service
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms'; // Importar Reactive Forms
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-form-monitor',
   imports: [FormsModule, ReactiveFormsModule,CommonModule],
   templateUrl: './form-monitor.component.html',
-  styleUrl: './form-monitor.component.scss',
+  styleUrls: ['./form-monitor.component.scss'],
   standalone: true
 })
+// Conponente para el formulario de monitores que puede ser de creación o de edición
 export class FormMonitorComponent {
   @Input() monitor!: Monitor; // Recibe el monitor a editar
   @Output() cancel = new EventEmitter<void>(); // Emite cuando se cancela
@@ -33,6 +33,7 @@ export class FormMonitorComponent {
   constructor(private modalService: ModalService, private monitorsService: MonitorsServiceService) { }
 
   ngOnInit() {
+    // Suscribirse al estado de la modal
     this.modalService.isCreating$.subscribe((isCreating) => {
       this.isCreating = isCreating;
 
@@ -55,20 +56,23 @@ export class FormMonitorComponent {
 
   saveMonitor() {
 
+    // Si el formulario es válido, guardamos el monitor
     if (this.monitorForm.valid) {
       const monitorData = this.monitorForm.value as Monitor;
 
-      // Si estamos editando, agregar el ID manualmente
+      // Si estamos editando, agregar el ID del monitor
       if (!this.isCreating && this.monitor && this.monitor.id) {
         monitorData.id = this.monitor.id;
       }
 
       if (this.isCreating) {
+        // Crear monitor
         this.monitorsService.addMonitor(monitorData).subscribe((addMonitor) => {
           this.modalService.notifyMonitorUpdated(addMonitor);
           this.modalService.closeModal();
         });
       } else {    
+        // Editar monitor
         this.monitorsService.updateMonitor(monitorData).subscribe((updatedMonitor) => {
           this.modalService.notifyMonitorUpdated(updatedMonitor);
           this.modalService.closeModal();
@@ -76,6 +80,7 @@ export class FormMonitorComponent {
         });
       }
     } else {
+      // Si el formulario tiene errores, mostrar alerta
       alert('El formulario contiene errores. Por favor, revisa los campos.');
     }
   }
@@ -90,6 +95,7 @@ export class FormMonitorComponent {
     const valid = emailRegex.test(control.value || '');
     return valid ? null : { invalidEmail: true };
   }
+
   // Getters para el acceso en el template
   get name() {
     return this.monitorForm.get('name');
@@ -108,3 +114,4 @@ export class FormMonitorComponent {
   }
 
 }
+
