@@ -36,6 +36,7 @@ export class MonitorSimpleComponent {
   }
 
   sendMail($event: Event) { //funcion para enviar el email clickando en un monitor
+    $event.preventDefault();
     const email = this.monitor.email;
     alert("A gmail email will be sent to: " + email);
     const subject = `Clase de ${this.activity.activityType.name} el día ${new Date(this.activity.startDate).getFullYear()}/${new Date(this.activity.startDate).getMonth()}/${new Date(this.activity.startDate).getDate()} a la/s ${new Date(this.activity.startDate).getHours()}:${new Date(this.activity.startDate).getMinutes()}`;
