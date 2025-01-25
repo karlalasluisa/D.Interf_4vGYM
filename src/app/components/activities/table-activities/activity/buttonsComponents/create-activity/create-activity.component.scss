@@ -16,7 +16,7 @@
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-  width: 30%;
+  width: 50%;
 }
 
 .loading-screen {
@@ -108,4 +108,9 @@
 
 .custom-select option {
   padding: 10px; /* Espaciado en las opciones */
+}
+
+.alargado{
+  width: 40%;
+  height: 20%;
 }

@@ -2,9 +2,9 @@
 
 <div class="overlay">
     <div class="container-fluid content">
-        <div class="container">
+        <div style="max-width: 100%; margin: auto; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
             <form class="p-4"
-                style="max-width: 400px; margin: auto; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+                style="max-width: 400px; margin: auto;">
                 <!-- Tipo de Actividad -->
                 <div class="mb-3">
                     <label for="tipoActividad" class="form-label">Select a activity type</label>
@@ -56,8 +56,8 @@
 
                 <!-- Botones -->
                 <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-danger w-45" (click)="onSubmit($event)">Aceptar</button>
-                    <button type="button" class="btn btn-danger w-45" (click)="onCancel($event)">Cancelar</button>
+                    <button type="submit" class="btn btn-danger w-45 alargado" (click)="onSubmit($event)">Aceptar</button>
+                    <button type="button" class="btn btn-danger w-45 alargado" (click)="onCancel($event)">Cancelar</button>
                 </div>
 
                 <div *ngIf="!this.isValid" class="alert alert-danger mt-3">
