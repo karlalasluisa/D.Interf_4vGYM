@@ -1,95 +1,86 @@
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    /* Asegúrate de que esté sobre todo */
-  }
-  
-  .content {
-    background: rgba(174, 174, 174, 0.815);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 30%;
-  }
-  
-  .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(101, 101, 101, 0.593);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .spinner {
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-top: 5px solid #007bff;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-  
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .loading-message{
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-  
-    p {
-      margin-top: 10px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Asegúrate de que esté sobre todo */
+}
 
-  .select-container {
-    position: relative;
-    //display: inline-block;
-  }
-  
-  /* Estilo del tooltip */
-  .tooltip {
-    position: absolute;
-    top: -30px; /* Ajusta según dónde quieras el tooltip */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-    z-index: 1000;
-  }
-  
-  /* Mostrar el tooltip cuando haces hover */
-  .select-container:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-  }
+.content {
+  background: rgba(174, 174, 174, 0.815);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 50%;
+}
+
+.custom-select {
+  background-color: #d9d9d9; /* Color gris para el contenedor del select */
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 4px; /* Bordes redondeados */
+  color: #333; /* Color del texto del select */
+  padding: 8px 12px;
+  appearance: none;
+  -webkit-appearance: none; /* Safari */
+  -moz-appearance: none; /* Firefox */
+  position: relative;
+}
+
+/* Para las opciones dentro del select */
+.custom-select option {
+  background-color: white; /* Fondo blanco para las opciones */
+  color: #333; /* Texto negro para las opciones */
+  padding: 10px; /* Espaciado en las opciones */
+}
+
+.custom-select::after {
+  content: '⮟'; /* Flecha hacia abajo */
+  font-size: 12px;
+  color: #a94442; /* Color de la flecha rojo oscuro */
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select-container {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: +80px; /* Ajusta según dónde quieras el tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 1000;
+}
+
+.select-container:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.alargado {
+  width: 40%;
+  height: 20%;
+}
+
+.btn-danger {
+  background-color: #a94442;
+  border-color: #a94442;
+}
