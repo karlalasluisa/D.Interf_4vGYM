@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { DateServiceService } from '../../../../../../../Services/date-service.service';
 import _ from 'lodash';
+import { waitForAsync } from '@angular/core/testing';
 
 
 @Component({
@@ -248,12 +249,12 @@ export class CreateActivityComponent {
     if (this.assambleActivity()){
 
       //guarda los datos y los updatea
-      this.activitiesService.addActivity(this.activity);
+      this.activitiesService.addActivity(this.activity).then(data => this.guardado.emit());
       this.windowService.setSaved();
       // this.activitiesService.notifyActivityChange(this.activity);
       this.windowService.hide();
       this.closeOverlay();
-      this.guardado.emit();
+      
     }
     
   }

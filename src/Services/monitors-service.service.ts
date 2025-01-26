@@ -28,6 +28,7 @@ export class MonitorsServiceService {
   }   
 
   deleteMonitor(id: number): Observable<void> {
+    
     return this.http.delete<void>('http://localhost:8000/monitors/' + id);
   }
 

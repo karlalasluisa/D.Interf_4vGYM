@@ -63,7 +63,7 @@ export class AcivityServiceService {
     return this.http.delete<Activity>('http://localhost:8000/activities/' + id).subscribe();
   }
 
-  addActivity(activity: Activity) {
+  async addActivity(activity: Activity) {
 
 
     return this.http.post<Activity>('http://localhost:8000/activities', this.getJsonActivity(activity)).subscribe();
